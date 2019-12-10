@@ -59,8 +59,8 @@ mock_dbcli_config = {
         },
     },
     'orgs': {
-        'everytown': {
-            'full_name': 'Everytown',
+        'myorg': {
+            'full_name': 'MyOrg',
         },
     },
 }

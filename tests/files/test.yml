@@ -1,7 +1,7 @@
 ---
 dbs:
   # Overrides something in the default config
-  devotedpg:
+  externalpg:
     exports:
       host: foo
 
