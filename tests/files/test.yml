@@ -1,0 +1,11 @@
+---
+dbs:
+  # Overrides something in the default config
+  devotedpg:
+    exports:
+      host: foo
+
+  # Creates something new:
+  newconfig:
+    exports:
+      host: blah

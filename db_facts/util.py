@@ -1,15 +1,5 @@
-import logging
-
-logger = logging.getLogger(__name__)
+import subprocess
 
 
-def write_to_table(df, engine, schema_name, table_name, records):
-    logger.info("Writing dataframe to database...")
-    with records.sources.dataframe(df=df,
-                                   schema_name=schema_name,
-                                   table_name=table_name,
-                                   db_engine=engine) as source,\
-        records.targets.table(db_engine=engine,
-                              schema_name=schema_name,
-                              table_name=table_name) as target:
-        records.move(source, target)
+def backtick(cmd):
+    return subprocess.check_output(cmd).decode('utf-8').strip()

@@ -77,6 +77,7 @@ setup(name='db_facts',
       author='Vince Broz',
       author_email='vince.broz@bluelabs.com',
       packages=find_packages(),
+      install_requires=['jinja2', 'pyyaml'],
       entry_points={
         'console_scripts': [
             'db_facts = db_facts.__main__:main'
@@ -85,5 +86,6 @@ setup(name='db_facts',
       cmdclass={
           'coverage_ratchet': CoverageRatchetCommand,
           'verify': VerifyVersionCommand,
-      }
+      },
+      scripts=['bin/db-facts'],
       )
