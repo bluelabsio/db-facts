@@ -17,6 +17,9 @@ test:
 
 citest:
 	ENV=test nosetests --exclude='tests/integration' --cover-package=db_facts --with-coverage --with-xunit --cover-html --cover-xml --nocapture --cover-inclusive --xunit-file=test-reports/junit.xml
+	@echo "Looking for un-ratcheted test coverage..."
+	@git status --porcelain metrics/coverage_high_water_mark
+	@test -z "$$(git status --porcelain metrics/coverage_high_water_mark | grep '^ M')"
 
 coverage:
 	python setup.py coverage_ratchet
@@ -28,6 +31,18 @@ quality:
 	       -v "$$(pwd):/usr/app"  \
 	       -v "$$(pwd)/Rakefile.quality:/usr/quality/Rakefile"  \
 	       "apiology/quality:$${quality_gem_version}" ${QUALITY_TOOL}
+
+# Note: .circleci/config.yml uses
+# https://github.com/bluelabsio/circleci-quality-orb to ensure metrics
+# are fully ratcheted, but this target may be useful in other contexts
+ciquality: quality
+	@echo "Looking for any new metrics..."
+	@git status --porcelain metrics
+	@echo "Looking for un-ratcheted quality metrics..."
+	@test -z "$$(git status --porcelain metrics | grep '^ M')"
+	@echo "Looking for un-checked-in quality metrics..."
+	@test -z "$$(git status --porcelain metrics | grep '^??')"
+
 
 package:
 	python3 setup.py sdist bdist_wheel
