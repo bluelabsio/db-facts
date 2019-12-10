@@ -24,10 +24,4 @@ pyenv local db_facts-"${python_version:?}"
 
 pip3 install --upgrade pip
 
-if ! pip3 config list | grep -E "extra-index-url='.*bluelabs\.jfrog\.io.*'" >/dev/null; then
-  echo 2>&1 "Ask on #help about getting your computer set up with Artifactory access."
-  exit 1
-fi
-
-
 pip3 install -r requirements.txt -e .
