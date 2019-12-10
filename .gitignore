@@ -63,6 +63,10 @@ target/
 /coverage.xml
 /nosetests.xml
 
+# mypy
+/typecover
+.mypy_cache
+
 .DS_Store
 
 # Editors

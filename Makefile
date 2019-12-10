@@ -1,4 +1,4 @@
-all: coverageclean test coverage quality
+all: typecheck coverageclean test coverage quality
 
 coverageclean:
 	rm -fr .coverage
@@ -8,6 +8,9 @@ realclean: clean
 
 clean:
 	FILES=$$(find . -name \*.pyc); for f in $${FILES}; do rm $$f; done
+
+typecheck:
+	mypy --cobertura-xml-report typecover --html-report typecover .
 
 test:
 	ENV=test nosetests --cover-package=db_facts --with-coverage --with-xunit --cover-html --cover-xml --nocapture --cover-inclusive
