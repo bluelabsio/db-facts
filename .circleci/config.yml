@@ -23,8 +23,8 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip3 install --extra-index-url "${ARTIFACTORY_PYPI_INDEX_URL}" --progress-bar=off -r requirements.txt
-            pip3 install --extra-index-url "${ARTIFACTORY_PYPI_INDEX_URL}" --progress-bar=off -e .
+            pip3 install --progress-bar=off -r requirements.txt
+            pip3 install --progress-bar=off -e .
       - save_cache:
           key: deps-v1-<<parameters.python_version>>-{{ .Branch }}-{{ checksum "requirements.txt" }}-{{ checksum "setup.py" }}
           paths:
@@ -59,8 +59,8 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip3 install --extra-index-url "${ARTIFACTORY_PYPI_INDEX_URL}" --progress-bar=off -r requirements.txt
-            pip3 install --extra-index-url "${ARTIFACTORY_PYPI_INDEX_URL}" --progress-bar=off -e .
+            pip3 install --progress-bar=off -r requirements.txt
+            pip3 install --progress-bar=off -e .
       - save_cache:
           key: deps-v1-<<parameters.python_version>>-{{ .Branch }}-{{ checksum "requirements.txt" }}-{{ checksum "setup.py" }}
           paths:
