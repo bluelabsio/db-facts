@@ -35,7 +35,7 @@ To do this, it relies on a config file ("dbcli.yml") which teaches it
 how to parse the user-friendly coordinates.  Much of the heavy lifting
 in the parsing part is done
 by
-[jinja_context.py](https://github.com/bluelabsio/bluelabs_db_facts/blob/master/db_facts/jinja_context.py),
+[jinja_context.py](https://github.com/bluelabsio/db-facts/blob/master/db_facts/jinja_context.py),
 which sets some variables and functions that can be used in jinja
 templates within the config file.
 
