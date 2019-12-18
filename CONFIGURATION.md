@@ -69,37 +69,33 @@ configurations were NOT merged. Only the top-levels are merged.
 
 ## Common configuration patterns
 
-### Standard LastPass credentials
+### Pulling auth tokens from the environment
 
 ```yaml
 dbs:
-  staticlpass:
-    jinja_context_name: standard
-    db_connect_method: lpass
-    lastpass_entry: "Just Some Awesome Database Credentials"
-  dynamiclpass:
-    jinja_context_name: standard
-    db_connect_method: lpass
-    lastpass_entry: "{{ username }} Specific Database Credentials"
+  mybigquerydb-myserviceuser:
+    jinja_context_name:
+      - env
+      - base64
+    exports:
+      type: bigquery
+      protocol: bigquery
+      bq_account: myserviceuser
+      bq_service_account_json: "{{ env('GCP_SERVICE_ACCOUNT_JSON_BASE64') | b64decode }}"
+      bq_default_project_id: 'my_gcp_project'
+      bq_default_dataset_id: 'my_bigquery_dataset
 ```
 
-With this config:
-
-* `db-facts staticlpass` will give you the credentials in the lastpass entry
-  "Just Some Awesome Database Credentials"
-* `db-facts dynamiclpass` will give you the credentials in the lastpass entry
-  "auser Awesome Database Credentials" assuming your name is Alice User and
-  therefore your first initial + last name is `auser`
-* `db-facts dynamiclpass-anadmin` will give you the credentials in the lastpass
-  entry "anadmin Awesome Database Credentials" (in other words, the username is
-  replaced by whatever comes after the dashes)
+With this config, `db-facts mybigquerydb-myserviceuser` will show you the credentials,
+  including the decoded environment variable.  "Just Some Awesome
 
 ### Inline credentials
 
-While this is not recommended for local laptop use (please use a lastpass
-config), it is currently the only supported strategy for JupyterHub.
+While this is not recommended (please save your secrets more securely
+than a YAML file sitting on disk!), you can specify things this way if
+you must.
 
-Here is an example redshift config with inline credentials:
+Here is an example Redshift config with inline credentials:
 
 ```yaml
 dbs:
@@ -110,6 +106,6 @@ dbs:
       database: analytics
       type: redshift
       protocol: postgres
-      user: cwegrzyn
+      user: janalyst
       password: thisisagreatpassword
 ```
