@@ -8,5 +8,6 @@ from .mock_dbcli_config import mock_dbcli_config
 class TestNilJinjaContext(unittest.TestCase):
     def test_nil_context(self, mock_subprocess):
         config = {}
-        context, filters = pull_jinja_context(['bluehq', 'job'], config, mock_dbcli_config)
+        context, filters = pull_jinja_context(['notthere', 'alsonotthere'],
+                                              config, mock_dbcli_config)
         self.assertEquals(context, {})
