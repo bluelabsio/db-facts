@@ -1,127 +1,75 @@
-# TODO: Follow these initial steps and then remove them
+# db-facts
 
-Welcome to create-python-app!
+db-facts translates from user-familiar database coordinates (e.g.,
+"redshift", "corppostgres dbadmin", "productoracle impl juser") into
+detailed instructions on how to access the database in question,
+providing configuration and templating mechnisms to wrap any
+credential management tools involved in providing those details and
+credentials.
 
-This app includes:
-
-* A working Dockerfile
-* Nosetests test suite and test coverage
-* Quality ruby gem
-* Scripts to build, test, and run the app
-* And more!
-
-## Getting started
-
-### Push to github
-
-Visit [github](https://github.com/new) and create your private project
-there under bluelabsio, then follow the instructions to push your repo
-up.
-
-### Configuring CircleCI to build
-
-1. [Add your project](https://circleci.com/add-projects/gh/bluelabsio)
-   in CircleCI.
-2. Go to the settings for your project (gear icon)
-3. Environment Variables
-4. Import Variables
-5. `bluelabs-joblib-python`
-6. Select `ARTIFACTORY_PYPI_INDEX_URL` and `PRONTO_GITHUB_ACCESS_TOKEN`
-7. Import
-
-### Create your feature branch
+Example:
 
 ```sh
-git checkout -b initial
+$ db-facts redshift
+export CONNECTION_TYPE
+CONNECTION_TYPE=direct
+export LASTPASS_SHARE_NAME_SUFFIX
+LASTPASS_SHARE_NAME_SUFFIX='blue labs redshift'
+export DB_PASSWORD
+DB_PASSWORD='hunter2'
+DB_HOST=whatevs.whatevs.us-east-1.redshift.amazonaws.com
+export DB_HOST
+export DB_DATABASE
+DB_DATABASE=analytics
+export DB_USERNAME
+DB_USERNAME=vbroz
+export DB_PORT
+DB_PORT=5439
+export DB_TYPE
+DB_TYPE=redshift
+export DB_PROTOCOL
+DB_PROTOCOL=postgres
 ```
 
-### Adding your requirements
+To do this, it relies on a config file ("dbcli.yml") which teaches it
+how to parse the user-friendly coordinates.  Much of the heavy lifting
+in the parsing part is done
+by
+[jinja_context.py](https://github.com/bluelabsio/db-facts/blob/master/db_facts/jinja_context.py),
+which sets some variables and functions that can be used in jinja
+templates within the config file.
 
-Add your python requirements to the [requirements.txt](./requirements.txt)
-file and they will be automatically imported on build by the default
-[Dockerfile](./Dockerfile).
+This is part of the suite of programs which allow a user to type in
+things like `db redshift` and connect via their own credentials to the
+configured database named 'redshift'.  Other parts of this chain can
+be found in the [ws-scripts](https://github.com/bluelabsio/ws-scripts)
+repo.
 
-### Configure your arguments
+If you need to set the instructions immediately to your environment
+variables, you can do this with the command:
+```sh
+eval $(db-facts redshift)
+```
 
-The `job_config_schema` variable in `__main__.py` describes the
-arguments you can pass on the command line. See [schema
-examples](http://json-schema.org/examples.html) to help craft
-arguments that make sense for your job.
+## Configuration
 
-### Clean up this README
+See [CONFIGURATION.md](./CONFIGURATION.md)
 
-Drop from here above, replace `## Boilerplate README` with `# Db Facts`, and
-start hacking using the instructions below to develop!
+## Library
 
-## Boilerplate README
+To use as a library:
 
-This, and the below sections, should be included in your project:
+```sh
+$ python
+Python 3.5.2 (default, Sep 12 2016, 09:31:17)
+[GCC 4.2.1 Compatible Apple LLVM 7.3.0 (clang-703.0.31)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import bluelabs_db_facts
+>>> db_facts.db(['redshift'])
+{'protocol': 'postgres', 'lastpass_share_name_suffix': 'blue labs redshift', 'host': 'bl-int-analytics1.cxtyzogmmhiv.us-east-1.redshift.amazonaws.com', 'connection_type': 'direct', 'user': 'vbroz', 'database': 'analytics', 'password': 'hunter1', 'port': 5439, 'type': 'redshift'}
+>>>
+```
 
 ## Development
 
-### Code locations
-
-* `db_facts/db_facts.py`
-  contains the main logic.
-* `db_facts/__main__.py` will let you define new
-  config to take in.
-* `tests/` has some example unit tests.
-
-### Installing development tools
-
-#### pyenv
-
-For instructions on installing pyenv visit the wiki
-page:
-[Using different versions of python in the same environment](https://github.com/bluelabsio/knowledge/wiki/Python-cheatsheet#using-different-versions-of-python-in-the-same-environment)
-
-#### virtualenv
-
-Follow the installation instructions from the wiki
-page:
-[Set up a Virtual Environment for your project](https://github.com/bluelabsio/knowledge/wiki/Python-cheatsheet#set-up-a-virtual-environment-for-your-project)
-
-### Building
-
-Download Python dependencies and create a virtual environment:
-
-```bash
-./deps.sh
-```
-
-### Running on the command line
-
-To run on the command line:
-
-```sh
-with-db redshift db_facts $(redshift-username) job_test
-```
-
-### Pushing to Docker
-
-#### Configuring Jenkins to build (developers)
-
-See [these instructions](https://github.com/bluelabsio/knowledge/wiki/Jenkins#to-set-up-a-build)
-to set up Jenkins.  The Jenkinsfile here should work fine.
-
-### Testing
-
-Run all of the tests except for the slow ones:
-
-```bash
-make test
-```
-
-To build a docker image and run your tests, you can call `./test.sh`.
-
-### Semantic versioning
-
-In this house, we use [semantic versioning](http://semver.org) to indicate
-when we make breaking changes to interfaces.  If you don't want to live
-dangerously, and you are currently using version a.y.z (see setup.py to see
-what version we're at) specify your requirement like this in requirements.txt:
-
-db_facts>=a.x.y,<b.0.0
-
-This will make sure you don't get automatically updated into the next
-breaking change.
+See [DEVELOPMENT.md](./DEVELOPMENT.md)

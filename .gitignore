@@ -63,11 +63,12 @@ target/
 /coverage.xml
 /nosetests.xml
 
+# mypy
+/typecover
+.mypy_cache
+
 .DS_Store
 
 # Editors
 *.bak
 *~
-
-# Build package cache
-.cached_deps

@@ -123,4 +123,3 @@ workflows:
               only: /v\d+\.\d+\.\d+(-[\w]+)?/
             branches:
               ignore: /.*/
-

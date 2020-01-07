@@ -4,15 +4,5 @@
 nose>=0.0
 coverage>=0.0
 flake8
-pycodestyle
-
-pandas
-sqlalchemy
-odictliteral
-
-# Here are some examples of other dependencies you may add
-#requests==2.9.1
-#boto3>=0.0
-
-# Here is an example of a dependency that is provided by Artifactory
-bluelabs_joblib
+mypy
+lxml # needed for mypy coverage report
