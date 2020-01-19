@@ -77,6 +77,7 @@ setup(name='db_facts',
       author='Vince Broz',
       author_email='vince.broz@bluelabs.com',
       packages=find_packages(),
+      package_data={"db_facts": ["py.typed"]},
       install_requires=['jinja2', 'pyyaml'],
       entry_points={
         'console_scripts': [
