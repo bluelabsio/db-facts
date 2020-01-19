@@ -2,6 +2,9 @@ from .base64_jinja_context import pull_base64_jinja_context
 from .env_jinja_context import pull_env_jinja_context
 from .types import DBName, DBConfig, DBCLIConfig, JinjaContext, JinjaFilters
 from typing import Dict, Callable, Union, Tuple, Optional
+import importlib
+import pkgutil
+import re
 
 
 context_pullers: Dict[str,
@@ -12,6 +15,18 @@ context_pullers: Dict[str,
     'env': pull_env_jinja_context,
     'base64': pull_base64_jinja_context,
 }
+
+# TODO: Finalize pattern and enable
+# plugin_name_pattern = re.compile(r"^(.+_)?db_facts(_.+)?$")
+plugin_name_pattern = re.compile(r".*facts.*")
+
+discovered_plugins = {
+    name: 123  # importlib.import_module(name)
+    for finder, name, ispkg
+    in pkgutil.iter_modules()
+    # if plugin_name_pattern.match(name)
+}
+print(f"VMB: Discovered plugins: {discovered_plugins}")
 
 
 def pull_jinja_context(db_name: DBName,
