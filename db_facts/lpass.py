@@ -1,5 +1,13 @@
 from subprocess import check_output
+from .types import LastPassUsernamePassword
 from .db_type import canonicalize_db_type, db_protocol
+
+
+def pull_lastpass_username_password(lastpass_entry_name: str) -> LastPassUsernamePassword:
+    return {
+        'user': lpass_field(lastpass_entry_name, 'username'),
+        'password': lpass_field(lastpass_entry_name, 'password'),
+    }
 
 
 def lpass_field(name: str, field: str) -> str:
