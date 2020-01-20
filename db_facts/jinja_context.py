@@ -11,26 +11,36 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-context_pullers: Dict[str, JinjaContextPuller] = {
-    'env': pull_env_jinja_context,
-    'base64': pull_base64_jinja_context,
-}
+context_pullers: Optional[Dict[str, JinjaContextPuller]] = None
 
-plugin_name_pattern = re.compile(r"^(.+_)?db_facts(_.+)?$")
 
-discovered_plugins = {
-    name: importlib.import_module(name)
-    for finder, name, ispkg
-    in pkgutil.iter_modules()
-    if plugin_name_pattern.match(name) and name != 'db_facts'
-}
-for plugin_name, plugin_module in discovered_plugins.items():
-    plugin_context_pullers = getattr(plugin_module, 'context_pullers', None)
-    if plugin_context_pullers is None:
-        logger.error(f"db-facts: Could not find context_pullers in {plugin_name} module")
-    else:
-        context_pullers.update(plugin_context_pullers)
-        logger.info(f"db-facts: Added {plugin_context_pullers.keys()}")
+def get_context_pullers() -> Dict[str, JinjaContextPuller]:
+    global context_pullers
+
+    if context_pullers is not None:
+        return context_pullers
+
+    context_pullers = {
+        'env': pull_env_jinja_context,
+        'base64': pull_base64_jinja_context,
+    }
+    plugin_name_pattern = re.compile(r"^(.+_)?db_facts(_.+)?$")
+
+    discovered_plugins = {
+        name: importlib.import_module(name)
+        for finder, name, ispkg
+        in pkgutil.iter_modules()
+        if plugin_name_pattern.match(name) and name != 'db_facts'
+    }
+    for plugin_name, plugin_module in discovered_plugins.items():
+        plugin_context_pullers = getattr(plugin_module, 'context_pullers', None)
+        if plugin_context_pullers is None:
+            logger.error(f"db-facts: Could not find context_pullers in {plugin_name} module")
+        else:
+            context_pullers.update(plugin_context_pullers)
+            logger.info(f"db-facts: Added {plugin_context_pullers.keys()}")
+
+    return context_pullers
 
 
 def pull_jinja_context(db_name: DBName,
@@ -46,7 +56,7 @@ def pull_jinja_context(db_name: DBName,
         full_context: JinjaContext = {}
         full_filters: JinjaFilters = {}
         for jinja_context_name in all_jinja_context_names:
-            if jinja_context_name in context_pullers:
+            if jinja_context_name in get_context_pullers():
                 context_or_context_and_filters = \
                     context_pullers[jinja_context_name](db_name, dbcli_config)
                 context: JinjaContext
