@@ -56,9 +56,10 @@ def pull_jinja_context(db_name: DBName,
         full_context: JinjaContext = {}
         full_filters: JinjaFilters = {}
         for jinja_context_name in all_jinja_context_names:
-            if jinja_context_name in get_context_pullers():
+            pullers = get_context_pullers()
+            if jinja_context_name in pullers:
                 context_or_context_and_filters = \
-                    context_pullers[jinja_context_name](db_name, dbcli_config)
+                    pullers[jinja_context_name](db_name, dbcli_config)
                 context: JinjaContext
                 filters: Optional[JinjaFilters] = None
                 if isinstance(context_or_context_and_filters, tuple):
