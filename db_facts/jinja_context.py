@@ -11,16 +11,16 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-context_pullers: Optional[Dict[str, JinjaContextPuller]] = None
+_context_pullers: Optional[Dict[str, JinjaContextPuller]] = None
 
 
 def get_context_pullers() -> Dict[str, JinjaContextPuller]:
-    global context_pullers
+    global _context_pullers
 
-    if context_pullers is not None:
-        return context_pullers
+    if _context_pullers is not None:
+        return _context_pullers
 
-    context_pullers = {
+    _context_pullers = {
         'env': pull_env_jinja_context,
         'base64': pull_base64_jinja_context,
     }
@@ -37,10 +37,10 @@ def get_context_pullers() -> Dict[str, JinjaContextPuller]:
         if plugin_context_pullers is None:
             logger.error(f"db-facts: Could not find context_pullers in {plugin_name} module")
         else:
-            context_pullers.update(plugin_context_pullers)
+            _context_pullers.update(plugin_context_pullers)
             logger.info(f"db-facts: Added {plugin_context_pullers.keys()}")
 
-    return context_pullers
+    return _context_pullers
 
 
 def pull_jinja_context(db_name: DBName,
