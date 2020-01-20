@@ -1,32 +1,36 @@
 from .base64_jinja_context import pull_base64_jinja_context
 from .env_jinja_context import pull_env_jinja_context
-from .types import DBName, DBConfig, DBCLIConfig, JinjaContext, JinjaFilters
-from typing import Dict, Callable, Union, Tuple, Optional
+from .types import DBName, DBConfig, DBCLIConfig, JinjaContext, JinjaFilters, JinjaContextPuller
+from typing import Dict, Tuple, Optional
 import importlib
 import pkgutil
 import re
+import logging
 
 
-context_pullers: Dict[str,
-                      Callable[[DBName, DBCLIConfig],
-                               Union[JinjaContext,
-                                     Tuple[JinjaContext,
-                                           JinjaFilters]]]] = {
+logger = logging.getLogger(__name__)
+
+
+context_pullers: Dict[str, JinjaContextPuller] = {
     'env': pull_env_jinja_context,
     'base64': pull_base64_jinja_context,
 }
 
-# TODO: Finalize pattern and enable
-# plugin_name_pattern = re.compile(r"^(.+_)?db_facts(_.+)?$")
-plugin_name_pattern = re.compile(r".*facts.*")
+plugin_name_pattern = re.compile(r"^(.+_)?db_facts(_.+)?$")
 
 discovered_plugins = {
-    name: 123  # importlib.import_module(name)
+    name: importlib.import_module(name)
     for finder, name, ispkg
     in pkgutil.iter_modules()
-    # if plugin_name_pattern.match(name)
+    if plugin_name_pattern.match(name) and name != 'db_facts'
 }
-print(f"VMB: Discovered plugins: {discovered_plugins}")
+for plugin_name, plugin_module in discovered_plugins.items():
+    plugin_context_pullers = getattr(plugin_module, 'context_pullers', None)
+    if plugin_context_pullers is None:
+        logger.error(f"db-facts: Could not find context_pullers in {plugin_name} module")
+    else:
+        context_pullers.update(plugin_context_pullers)
+        logger.info(f"db-facts: Added {plugin_context_pullers.keys()}")
 
 
 def pull_jinja_context(db_name: DBName,
