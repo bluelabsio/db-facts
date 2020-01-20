@@ -55,6 +55,19 @@ eval $(db-facts redshift)
 
 See [CONFIGURATION.md](./CONFIGURATION.md)
 
+## Extensions
+
+You can create a plugin providing your own Jinja contexts by installing
+your own Python package with `db_facts` somewhere in the name, with a
+dictionary in the top module named `context_pullers`.  This dictionary
+should map names of Jinja contexts to functions matching the
+'JinjaContextPuller' type defined in
+[db_facts_types.py](https://github.com/bluelabsio/db-facts/blob/master/db_facts/db_facts_tpyes.py).
+You can use the existing Jinja context pullers (`pull_*_jinja_context`)
+referenced in
+[jinja_context.py](https://github.com/bluelabsio/db-facts/blob/master/db_facts/jinja_context.py)
+as examples.
+
 ## Library
 
 To use as a library:
