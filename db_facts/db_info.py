@@ -5,8 +5,8 @@ from .jinja_context import pull_jinja_context
 from .errors import fail_on_invalid_db_name
 from .config import load_config
 from .lpass import db_info_from_lpass, lpass_field
-from .types import (DBConfig, DBCLIConfig, JinjaContext,
-                    LastPassUsernamePassword, DBFacts, JinjaFilters)
+from .db_facts_types import (DBConfig, DBCLIConfig, JinjaContext,
+                             LastPassUsernamePassword, DBFacts, JinjaFilters)
 from typing import Any, Tuple, Optional
 
 

@@ -1,6 +1,6 @@
 from .base64_jinja_context import pull_base64_jinja_context
 from .env_jinja_context import pull_env_jinja_context
-from .types import DBName, DBConfig, DBCLIConfig, JinjaContext, JinjaFilters, JinjaContextPuller
+from .db_facts_types import DBName, DBConfig, DBCLIConfig, JinjaContext, JinjaFilters, JinjaContextPuller
 from typing import Dict, Tuple, Optional
 import importlib
 import pkgutil
