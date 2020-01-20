@@ -6,7 +6,7 @@ from .mock_dbcli_config import mock_dbcli_config
 
 @patch('db_facts.db_info.pull_jinja_context')
 @patch('db_facts.db_info.db_info_from_lpass')
-@patch('db_facts.db_info.lpass_field')
+@patch('db_facts.lpass.lpass_field')
 class TestDBInfo(unittest.TestCase):
     def test_db_info_two_level_with_config(self,
                                            mock_lpass_field,
