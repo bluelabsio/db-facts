@@ -1,5 +1,5 @@
 import base64
-from .types import DBName, DBCLIConfig, JinjaContext, JinjaFilters
+from .db_facts_types import DBName, DBCLIConfig, JinjaContext, JinjaFilters
 from typing import Tuple
 
 
