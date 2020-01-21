@@ -83,6 +83,10 @@ setup(name='db_facts',
         'console_scripts': [
             'db_facts = db_facts.__main__:main'
         ],
+        "db_facts.jinja_contexts": [
+            'base64 = db_facts.base64_jinja_context:pull_base64_jinja_context',
+            'env = db_facts.env_jinja_context:pull_env_jinja_context',
+        ]
       },
       cmdclass={
           'coverage_ratchet': CoverageRatchetCommand,

@@ -1,5 +1,3 @@
-from .base64_jinja_context import pull_base64_jinja_context
-from .env_jinja_context import pull_env_jinja_context
 from .db_facts_types import (DBName, DBConfig, DBCLIConfig, JinjaContext, JinjaFilters,
                              JinjaContextPuller)
 from typing import Dict, Tuple, Optional
@@ -19,19 +17,13 @@ def get_context_pullers() -> Dict[str, JinjaContextPuller]:
     if _context_pullers is not None:
         return _context_pullers
 
-    _context_pullers = {
-        'env': pull_env_jinja_context,
-        'base64': pull_base64_jinja_context,
-    }
-
     # https://setuptools.readthedocs.io/en/latest/setuptools.html#dynamic-discovery-of-services-and-plugins
     # https://packaging.python.org/guides/creating-and-discovering-plugins/#using-naming-convention
-    discovered_pullers = {
+    _context_pullers = {
         entry_point.name: entry_point.load()
         for entry_point
         in pkg_resources.iter_entry_points('db_facts.jinja_contexts')
     }
-    _context_pullers.update(discovered_pullers)
 
     return _context_pullers
 
