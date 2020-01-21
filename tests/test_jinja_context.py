@@ -1,5 +1,4 @@
 import unittest
-from unittest.mock import patch, Mock
 from db_facts.jinja_context import get_context_pullers
 import db_facts
 
