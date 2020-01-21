@@ -3,9 +3,7 @@ from .env_jinja_context import pull_env_jinja_context
 from .db_facts_types import (DBName, DBConfig, DBCLIConfig, JinjaContext, JinjaFilters,
                              JinjaContextPuller)
 from typing import Dict, Tuple, Optional
-import importlib
-import pkgutil
-import re
+import pkg_resources
 import logging
 
 
@@ -25,21 +23,15 @@ def get_context_pullers() -> Dict[str, JinjaContextPuller]:
         'env': pull_env_jinja_context,
         'base64': pull_base64_jinja_context,
     }
-    plugin_name_pattern = re.compile(r"^(.+_)?db_facts(_.+)?$")
 
-    discovered_plugins = {
-        name: importlib.import_module(name)
-        for finder, name, ispkg
-        in pkgutil.iter_modules()
-        if plugin_name_pattern.match(name) and name != 'db_facts'
+    # https://setuptools.readthedocs.io/en/latest/setuptools.html#dynamic-discovery-of-services-and-plugins
+    # https://packaging.python.org/guides/creating-and-discovering-plugins/#using-naming-convention
+    discovered_pullers = {
+        entry_point.name: entry_point.load()
+        for entry_point
+        in pkg_resources.iter_entry_points('db_facts.jinja_contexts')
     }
-    for plugin_name, plugin_module in discovered_plugins.items():
-        plugin_context_pullers = getattr(plugin_module, 'context_pullers', None)
-        if plugin_context_pullers is None:
-            logger.error(f"db-facts: Could not find context_pullers in {plugin_name} module")
-        else:
-            _context_pullers.update(plugin_context_pullers)
-            logger.info(f"db-facts: Added {plugin_context_pullers.keys()}")
+    _context_pullers.update(discovered_pullers)
 
     return _context_pullers
 
