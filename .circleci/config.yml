@@ -76,12 +76,11 @@ jobs:
             cat >> $HOME/.pypirc \<<EOF
             [distutils]
             index-servers =
-                local
+                pypi
 
-            [local]
-            repository: https://bluelabs.jfrog.io/bluelabs/api/pypi/pypi-local
-            username: $ARTIFACTORY_USER
-            password: $ARTIFACTORY_PASSWORD
+            [pypi]
+            username: $PYPI_USER
+            password: $PYPI_PASSWORD
             EOF
       - run:
           name: create packages
@@ -115,7 +114,7 @@ workflows:
       # to install with `pip install` or add to requirements.txt, you
       # can run publish.sh
       - publish:
-          context: Artifactory
+          context: PyPI
           requires:
             - test-3.6
           filters:
