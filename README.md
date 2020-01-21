@@ -53,7 +53,13 @@ eval $(db-facts redshift)
 
 ## Configuration
 
-See [CONFIGURATION.md](./CONFIGURATION.md)
+You can configure `db-facts` to connect to your databases.  See
+[CONFIGURATION.md](./CONFIGURATION.md) for details.
+
+## Extensions
+
+You can extend `db-facts` to pull configuration from other systems.
+See [EXTENSIONS.md](./EXTENSIONS.md) for details.
 
 ## Library
 

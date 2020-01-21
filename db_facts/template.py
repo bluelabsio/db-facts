@@ -1,6 +1,6 @@
 import jinja2
 from typing import Any, Tuple
-from .types import JinjaContext, JinjaFilters
+from .db_facts_types import JinjaContext, JinjaFilters
 
 
 def template(s: str, jinja_context_and_filters: Tuple[JinjaContext, JinjaFilters]) -> str:

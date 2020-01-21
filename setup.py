@@ -10,7 +10,7 @@ import os
 import sys
 
 
-VERSION = '2.14.0'
+VERSION = '2.15.0'
 
 
 # From https://circleci.com/blog/continuously-deploying-python-packages-to-pypi-with-circleci/
@@ -77,11 +77,16 @@ setup(name='db_facts',
       author='Vince Broz',
       author_email='vince.broz@bluelabs.com',
       packages=find_packages(),
+      package_data={"db_facts": ["py.typed"]},
       install_requires=['jinja2', 'pyyaml'],
       entry_points={
         'console_scripts': [
             'db_facts = db_facts.__main__:main'
         ],
+        "db_facts.jinja_contexts": [
+            'base64 = db_facts.base64_jinja_context:pull_base64_jinja_context',
+            'env = db_facts.env_jinja_context:pull_env_jinja_context',
+        ]
       },
       cmdclass={
           'coverage_ratchet': CoverageRatchetCommand,

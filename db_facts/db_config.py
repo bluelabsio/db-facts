@@ -1,4 +1,4 @@
-from .types import DBConfig, DBCLIConfig
+from .db_facts_types import DBConfig, DBCLIConfig
 from typing import Optional
 
 
