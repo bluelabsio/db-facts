@@ -8,6 +8,9 @@ class TestJinjaContext(unittest.TestCase):
     def setUp(self):
         db_facts.jinja_context._context_pullers = None
 
+    def tearDown(self):
+        db_facts.jinja_context._context_pullers = None
+
     @patch('db_facts.jinja_context.pkg_resources')
     def test_get_context_pullers(self, mock_pkg_resources):
         mock_entry_point_a = Mock(name='entry_point_a')
