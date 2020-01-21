@@ -21,6 +21,9 @@ setup(name='my_db_facts_plugin',
       },
 ```
 
+This will create a new Jinja context named `my_context` that you can
+specify in your `db-facts` [configuration](./CONFIGURATION.md).
+
 More details:
 
 * [setuptools docs](https://setuptools.readthedocs.io/en/latest/setuptools.html#dynamic-discovery-of-services-and-plugins)
