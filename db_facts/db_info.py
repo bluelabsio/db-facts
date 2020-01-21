@@ -5,7 +5,7 @@ from .jinja_context import pull_jinja_context
 from .errors import fail_on_invalid_db_name
 from .config import load_config
 from .lpass import pull_lastpass_username_password, db_info_from_lpass
-from .types import DBConfig, DBCLIConfig, DBFacts
+from .db_facts_types import DBConfig, DBCLIConfig, DBFacts
 from .db_config import db_config
 
 
