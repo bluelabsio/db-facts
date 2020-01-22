@@ -91,7 +91,7 @@ jobs:
           name: upload to pypi
           command: |
             . venv/bin/activate
-            twine upload -r local dist/*
+            twine upload -r pypi dist/*
 
 workflows:
   version: 2
@@ -110,9 +110,9 @@ workflows:
           name: test-3.7
           python_version: "3.7"
 
-      # To trigger publishing to our local repo for others to be able
-      # to install with `pip install` or add to requirements.txt, you
-      # can run publish.sh
+      # To trigger publishing to pypi for others to be able to install
+      # with `pip install` or add to requirements.txt, you can run
+      # publish.sh
       - publish:
           context: PyPI
           requires:
