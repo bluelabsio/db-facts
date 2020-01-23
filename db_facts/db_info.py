@@ -5,11 +5,11 @@ from .jinja_context import pull_jinja_context
 from .errors import fail_on_invalid_db_name
 from .config import load_config
 from .lpass import pull_lastpass_username_password, db_info_from_lpass
-from .db_facts_types import DBConfig, DBCLIConfig, DBFacts
+from .db_facts_types import DBConfig, DBCLIConfig, DBFacts, DBName
 from .db_config import db_config
 
 
-def db(db_name: str, dbcli_config: DBCLIConfig = None) -> DBFacts:
+def db(db_name: DBName, dbcli_config: DBCLIConfig = None) -> DBFacts:
     """Get connection info for specified database."""
 
     if dbcli_config is None:
