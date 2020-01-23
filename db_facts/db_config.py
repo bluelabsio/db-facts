@@ -1,5 +1,5 @@
 from .db_facts_types import DBConfig, DBCLIConfig, DBName
-from typing import Optional, List
+from typing import Optional
 
 
 def db_config(dbcli_config: DBCLIConfig, db_name: DBName) -> Optional[DBConfig]:
