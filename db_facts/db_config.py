@@ -1,8 +1,8 @@
-from .db_facts_types import DBConfig, DBCLIConfig
-from typing import Optional
+from .db_facts_types import DBConfig, DBCLIConfig, DBName
+from typing import Optional, List
 
 
-def db_config(dbcli_config: DBCLIConfig, db_name: str) -> Optional[DBConfig]:
+def db_config(dbcli_config: DBCLIConfig, db_name: DBName) -> Optional[DBConfig]:
     dbs = dbcli_config['dbs']
 
     config_name = "-".join(db_name)

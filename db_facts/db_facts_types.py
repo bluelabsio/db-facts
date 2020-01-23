@@ -6,7 +6,7 @@ from typing import Any, Dict, Callable, Union, Tuple
 #
 # 🤷
 
-DBName = str
+DBName = List[str]
 LastPassUsernamePassword = Dict[str, str]
 DBConfig = Dict[str, Any]
 DBCLIConfig = Any
