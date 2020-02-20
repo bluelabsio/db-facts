@@ -16,10 +16,8 @@ class TestRunner(unittest.TestCase):
         runner = Runner()
         with self.assertRaises(SystemExit):
             runner.run(['/bin/db-facts'])
-        self.assertEqual(mock_stderr.getvalue(),
-                         ('usage: db-facts [-h] [--json] dbname\n'
-                          'db-facts: error: the following arguments '
-                          'are required: dbname\n'))
+        self.assertIn('the following arguments are required: dbname',
+                      mock_stderr.getvalue())
         self.assertEqual(mock_stdout.getvalue(), '')
 
     def test_runner_exception(self,
