@@ -18,7 +18,7 @@ task quality: %i[pronto]
 Quality::Rake::Task.new do |t|
   # t.verbose = true
 
-  t.exclude_files = '{.circleci/config.yml,LICENSE,CODE_OF_CONDUCT.md}'
+  t.exclude_files = ['.circleci/config.yml', 'LICENSE', 'CODE_OF_CONDUCT.md']
 
   # Let's stick to the Python-relevant tools for speed
   t.skip_tools = [
