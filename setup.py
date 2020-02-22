@@ -71,11 +71,17 @@ class CoverageRatchetCommand(Command):
             print(f"Code coverage steady at {new_coverage}%")
 
 
+this_directory = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
+
 setup(name='db_facts',
       version=VERSION,
       description='Database connection configuration manager',
+      long_description=long_description,
+      download_url=f'https://github.com/bluelabsio/db-facts/tarball/{VERSION}',
       author='Vince Broz',
-      author_email='vince.broz@bluelabs.com',
+      author_email='opensource@bluelabs.com',
       packages=find_packages(),
       package_data={"db_facts": ["py.typed"]},
       install_requires=['jinja2', 'pyyaml'],
@@ -93,4 +99,15 @@ setup(name='db_facts',
           'verify': VerifyVersionCommand,
       },
       scripts=['bin/db-facts'],
+      license='Apache Software License',
+      classifiers=[
+          'Development Status :: 4 - Beta',
+          'Intended Audience :: Developers',
+          'Topic :: Database :: Front-Ends',
+          'License :: OSI Approved :: Apache Software License',
+          'Programming Language :: Python :: 3',
+          'Programming Language :: Python :: 3.6',
+          'Programming Language :: Python :: 3.7',
+          'Programming Language :: Python :: 3.8',
+      ],
       )
