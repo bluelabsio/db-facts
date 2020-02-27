@@ -1,16 +1,24 @@
-all: typecheck coverageclean test coverage quality
+all: typecheck typecoverage coverageclean test coverage quality
 
 coverageclean:
 	rm -fr .coverage
 
-realclean: clean
-	rm -rf .cached_deps
+typecoverageclean:
+	rm -fr .mypy_cache
 
 clean:
 	FILES=$$(find . -name \*.pyc); for f in $${FILES}; do rm $$f; done
 
 typecheck:
 	mypy --cobertura-xml-report typecover --html-report typecover .
+
+typecoverage:
+	python setup.py mypy_ratchet
+
+citypecoverage: typecoverage
+	@echo "Looking for un-checked-in type coverage metrics..."
+	@git status --porcelain metrics/mypy_high_water_mark
+	@test -z "$$(git status --porcelain metrics/mypy_high_water_mark)"
 
 test:
 	ENV=test nosetests --cover-package=db_facts --with-coverage --with-xunit --cover-html --cover-xml --nocapture --cover-inclusive
@@ -23,6 +31,14 @@ citest:
 
 coverage:
 	python setup.py coverage_ratchet
+
+cicoverage: coverage
+	@echo "Looking for un-checked-in unit test coverage metrics..."
+	@git status --porcelain metrics/coverage_high_water_mark
+	@test -z "$$(git status --porcelain metrics/coverage_high_water_mark)"
+
+flake8:
+	flake8 bluelabs_joblib tests
 
 # to run a single item, you can do: make QUALITY_TOOL=bigfiles quality
 quality:
@@ -48,5 +64,4 @@ package:
 	python3 setup.py sdist bdist_wheel
 
 docker:
-	PIP_CONFIG_FILE=$${PIP_CONFIG_FILE:-/Library/Application\ Support/pip/pip.conf}; \
-	DOCKER_BUILDKIT=1 docker build --progress=plain -t db_facts --secret id=pipconf,src="$${PIP_CONFIG_FILE:?}" .
+	docker build --progress=plain -t db_facts .

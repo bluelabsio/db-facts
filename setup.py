@@ -5,7 +5,6 @@ from decimal import Decimal
 from distutils.cmd import Command
 from setuptools import setup, find_packages
 from setuptools.command.install import install
-from typing import List, Tuple
 import os
 import sys
 
@@ -31,16 +30,11 @@ class VerifyVersionCommand(install):
 
 class CoverageRatchetCommand(Command):
     description = 'Run coverage ratchet'
-    user_options: List[Tuple[str, str, str]] = [
-    ]
-
-    def initialize_options(self) -> None:
-        """Set default values for options."""
-        self.coverage_file = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            'metrics',
-            'coverage_high_water_mark'
-        )
+    user_options = []  # type: ignore
+    coverage_file: str
+    coverage_source_file: str
+    coverage_url: str
+    type_of_coverage: str
 
     def finalize_options(self) -> None:
         pass
@@ -49,7 +43,7 @@ class CoverageRatchetCommand(Command):
         """Run command."""
         import xml.etree.ElementTree as ET
 
-        tree = ET.parse("coverage.xml")
+        tree = ET.parse(self.coverage_source_file)
         new_coverage = Decimal(tree.getroot().attrib["line-rate"]) * 100
 
         if not os.path.exists(self.coverage_file):
@@ -61,14 +55,40 @@ class CoverageRatchetCommand(Command):
 
         if new_coverage < high_water_mark:
             raise Exception(
-                f"Coverage used to be {high_water_mark}; down to "
-                f"{new_coverage}%.  Fix by viewing 'cover/index.html'")
+                f"{self.type_of_coverage} coverage used to be {high_water_mark}; "
+                f"down to {new_coverage}%.  Fix by viewing '{self.coverage_url}'")
         elif new_coverage > high_water_mark:
             with open(self.coverage_file, 'w') as f:
                 f.write(str(new_coverage))
             print(f"Just ratcheted coverage up to {new_coverage}%")
         else:
             print(f"Code coverage steady at {new_coverage}%")
+
+
+class TestCoverageRatchetCommand(CoverageRatchetCommand):
+    def initialize_options(self) -> None:
+        """Set default values for options."""
+        self.type_of_coverage = 'Test'
+        self.coverage_url = 'cover/index.html'
+        self.coverage_file = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            'metrics',
+            'coverage_high_water_mark'
+        )
+        self.coverage_source_file = "coverage.xml"
+
+
+class MypyCoverageRatchetCommand(CoverageRatchetCommand):
+    def initialize_options(self) -> None:
+        """Set default values for options."""
+        self.type_of_coverage = 'Mypy'
+        self.coverage_url = 'typecover/index.html'
+        self.coverage_file = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            'metrics',
+            'mypy_high_water_mark'
+        )
+        self.coverage_source_file = "typecover/cobertura.xml"
 
 
 this_directory = os.path.abspath(os.path.dirname(__file__))
@@ -95,7 +115,8 @@ setup(name='db_facts',
         ]
       },
       cmdclass={
-          'coverage_ratchet': CoverageRatchetCommand,
+          'coverage_ratchet': TestCoverageRatchetCommand,
+          'mypy_ratchet': MypyCoverageRatchetCommand,
           'verify': VerifyVersionCommand,
       },
       scripts=['bin/db-facts'],
