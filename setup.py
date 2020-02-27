@@ -9,7 +9,7 @@ import os
 import sys
 
 
-VERSION = '2.15.3'
+VERSION = '3.0.0'
 
 
 # From https://circleci.com/blog/continuously-deploying-python-packages-to-pypi-with-circleci/
