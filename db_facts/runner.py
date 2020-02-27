@@ -4,7 +4,7 @@ from .db_info import db
 from .exports import print_exports
 from .list_db_names import list_db_names
 from .config_yaml import config_yaml
-from typing import List, Namespace
+from typing import List
 from .errors import UserErrorException
 import argparse
 import json
@@ -17,7 +17,7 @@ class Runner():
     def run(self, argv: List[str]) -> int:
         try:
 
-            def dump_json(args: Namespace) -> None:
+            def dump_json(args: argparse.Namespace) -> None:
                 db_name_str: str = args.dbname[0]
                 db_name = db_name_str.split('-')
 
@@ -25,22 +25,26 @@ class Runner():
 
                 print(json.dumps(db_info, sort_keys=True, indent=4))
 
-            def dump_config(dbname: List[str]):
-                db_name_str: str = dbname
+            def dump_config(args: argparse.Namespace):
+                db_name_str: str = args.dbname[0]
                 db_name = db_name_str.split('-')
 
                 db_info = db(db_name)
                 print(config_yaml(db_name_str, db_info), end='')
 
-            def dump_sh():
+            def dump_sh(args: argparse.Namespace):
+                db_name_str: str = args.dbname[0]
+                db_name = db_name_str.split('-')
+
+                db_info = db(db_name)
                 print_exports(db_info)
-i
+
             desc = 'Pull information about databases from user-friendly names'
             parser = argparse.ArgumentParser(prog='db-facts', description=desc)
             subparsers = parser.add_subparsers()
 
             list_parser = subparsers.add_parser('list', help='List available dbnames')
-            list_parser.set_defaults(func=list_db_names)
+            list_parser.set_defaults(func=lambda args: list_db_names())
 
             json_parser = subparsers.add_parser('json', help='Report output in JSON format '
                                                 '(default: env vars)')
@@ -70,8 +74,6 @@ i
 
             args = parser.parse_args(argv[1:])
             args.func(args)
-
-
 
             return 0
         except UserErrorException as e:
