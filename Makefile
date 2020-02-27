@@ -10,7 +10,7 @@ clean:
 	FILES=$$(find . -name \*.pyc); for f in $${FILES}; do rm $$f; done
 
 typecheck:
-	mypy --cobertura-xml-report typecover --html-report typecover .
+	mypy --cobertura-xml-report typecover --html-report typecover db_facts
 
 typecoverage:
 	python setup.py mypy_ratchet
