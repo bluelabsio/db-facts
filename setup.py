@@ -5,7 +5,6 @@ from decimal import Decimal
 from distutils.cmd import Command
 from setuptools import setup, find_packages
 from setuptools.command.install import install
-from typing import List, Tuple
 import os
 import sys
 
