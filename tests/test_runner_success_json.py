@@ -27,7 +27,7 @@ class TestRunnerSuccessJson(unittest.TestCase):
             'connection_type': 'connection_type',
         }
 
-        self.assertEqual(0, runner.run(['/bin/db-facts', '--json', 'foo']))
+        self.assertEqual(0, runner.run(['/bin/db-facts', 'json', 'foo']))
         mock_db.assert_called_with(['foo'])
         self.assertEqual(mock_stderr.getvalue(), '')
         parsed_json_value = {

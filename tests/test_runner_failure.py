@@ -22,17 +22,6 @@ class TestRunner(unittest.TestCase):
                       mock_stderr.getvalue())
         self.assertEqual(mock_stdout.getvalue(), '')
 
-    def test_runner_too_many_args(self,
-                                  mock_stdout,
-                                  mock_stderr,
-                                  mock_db):
-        runner = Runner()
-        out = runner.run(['/bin/db-facts', '--config', '--json', 'foo'])
-        self.assertEqual(out, 1)
-        self.assertIn('Please specify only one of --json or --config',
-                      mock_stderr.getvalue())
-        self.assertEqual(mock_stdout.getvalue(), '')
-
     def test_runner_exception(self,
                               mock_stdout,
                               mock_stderr,
@@ -40,7 +29,7 @@ class TestRunner(unittest.TestCase):
         runner = Runner()
         mock_db.side_effect = UserErrorException('error message here')
 
-        self.assertEqual(1, runner.run(['/bin/db-facts', 'foo']))
+        self.assertEqual(1, runner.run(['/bin/db-facts', 'sh', 'foo']))
         mock_db.assert_called_with(['foo'])
         self.assertEqual(mock_stderr.getvalue(), 'error message here\n')
         self.assertEqual(mock_stdout.getvalue(), '')
@@ -53,22 +42,20 @@ class TestRunner(unittest.TestCase):
         with self.assertRaises(SystemExit):
             runner.run(['/bin/db-facts', '--help'])
         self.assertEqual(mock_stderr.getvalue(), '')
-        helpstr = ('usage: db-facts [-h] [--json] [--config] dbname\n'
-                   '\n'
-                   'Pull information about databases from '
-                   'user-friendly names\n'
-                   '\n'
-                   'positional arguments:\n'
-                   '  dbname      Friendly name of database '
-                   '(e.g., "redshift", "dnc", "cms-impl-\n'
-                   '              dbadmin")\n'
-                   '\n'
-                   'optional arguments:\n'
-                   '  -h, --help  show this help message and exit\n'
-                   '  --json      Report output in JSON format '
-                   '(default: env vars)\n'
-                   '  --config    Report output in db-facts config '
-                   'format (default: env vars)\n')
+        helpstr = """
+usage: db-facts [-h] {list,json,config,sh} ...
+
+Pull information about databases from user-friendly names
+
+positional arguments:
+  {list,json,config,sh}
+    list                List available dbnames
+    json                Report output in JSON format
+    config              Report output in db-facts config format (default: env vars)
+    sh                  Report output in Bourne shell envionment variable format
+
+optional arguments:
+  -h, --help            show this help message and exit"""
 
         def without_whitespace(s: str) -> str:
             return s.replace(" ", "").replace("\n", "")

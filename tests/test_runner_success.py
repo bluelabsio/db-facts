@@ -25,7 +25,7 @@ class TestRunner(unittest.TestCase):
             'connection_type': 'connection_type',
         }
 
-        self.assertEqual(0, runner.run(['/bin/db-facts', 'foo']))
+        self.assertEqual(0, runner.run(['/bin/db-facts', 'sh', 'foo']))
         mock_db.assert_called_with(['foo'])
         self.assertEqual(mock_stderr.getvalue(), '')
         self.assertEqual(mock_stdout.getvalue(),

@@ -46,11 +46,10 @@ class Runner():
             list_parser = subparsers.add_parser('list', help='List available dbnames')
             list_parser.set_defaults(func=lambda args: list_db_names())
 
-            json_parser = subparsers.add_parser('json', help='Report output in JSON format '
-                                                '(default: env vars)')
+            json_parser = subparsers.add_parser('json', help='Report output in JSON format')
             json_parser.add_argument('dbname', nargs=1,
                                      help=('Friendly name of database '
-                                           '(e.g., "redshift", "dnc", '
+                                           '(e.g., "redshift", "dmv", '
                                            '"abc-dev-dbadmin")'))
             json_parser.set_defaults(func=dump_json)
 
@@ -59,7 +58,7 @@ class Runner():
                                                   '(default: env vars)')
             config_parser.add_argument('dbname', nargs=1,
                                        help=('Friendly name of database '
-                                             '(e.g., "redshift", "sdf", '
+                                             '(e.g., "redshift", "dmv", '
                                              '"abc-dev-dbadmin")'))
             config_parser.set_defaults(func=dump_config)
 
@@ -68,7 +67,7 @@ class Runner():
                                                     'variable format '))
             sh_parser.add_argument('dbname', nargs=1,
                                    help=('Friendly name of database '
-                                         '(e.g., "redshift", "dnc", '
+                                         '(e.g., "redshift", "dmv", '
                                          '"abc-dev-dbadmin")'))
             sh_parser.set_defaults(func=dump_sh)
 
