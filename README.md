@@ -10,7 +10,7 @@ credentials.
 Example:
 
 ```sh
-$ db-facts redshift
+$ db-facts sh redshift
 export CONNECTION_TYPE
 CONNECTION_TYPE=direct
 export LASTPASS_SHARE_NAME_SUFFIX
