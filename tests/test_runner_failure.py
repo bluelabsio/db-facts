@@ -5,6 +5,10 @@ from unittest.mock import patch
 from db_facts.errors import UserErrorException
 
 
+def without_whitespace(s: str) -> str:
+    return s.replace(" ", "").replace("\n", "")
+
+
 @patch('db_facts.runner.db')
 @patch('sys.stderr', new_callable=StringIO)
 @patch('sys.stdout', new_callable=StringIO)
@@ -18,8 +22,8 @@ class TestRunner(unittest.TestCase):
         runner = Runner()
         out = runner.run(['/bin/db-facts'])
         self.assertEqual(out, 1)
-        self.assertIn('Pull information about databases from',
-                      mock_stderr.getvalue())
+        self.assertIn(without_whitespace('Pull information about databases from'),
+                      without_whitespace(mock_stderr.getvalue()))
         self.assertEqual(mock_stdout.getvalue(), '')
 
     def test_runner_exception(self,
@@ -57,8 +61,6 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit"""
 
-        def without_whitespace(s: str) -> str:
-            return s.replace(" ", "").replace("\n", "")
 
         self.assertEqual(without_whitespace(mock_stdout.getvalue()),
                          without_whitespace(helpstr))
