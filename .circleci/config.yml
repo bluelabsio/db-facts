@@ -11,6 +11,13 @@ jobs:
       python_version:
         type: string
         description: "Version of python to test against"
+      coverage:
+        type: boolean
+        # The python and pandas versions can affect the mypy and test
+        # coverage in subtle ways - coverage enforcement should be set
+        # only on the combination which matches local development.
+        default: false
+        description: "Enforce coverage not slipping"
     docker:
       - image: circleci/python:<<parameters.python_version>>
     steps:
@@ -29,10 +36,33 @@ jobs:
           paths:
             - "venv"
       - run:
-          name: test
+          name: Run tests
           command: |
             . venv/bin/activate
-            make citest coverage
+            make citest
+            if [ "<<parameters.coverage>>" == true ]
+            then
+              make cicoverage
+            fi
+      - run:
+          when: always
+          name: Archive coverage report
+          command: |
+            tar -czvf cover.tar.gz cover
+      - run:
+          name: Typecheck
+          command: |
+            . venv/bin/activate
+            make typecheck
+            if [ "<<parameters.coverage>>" == true ]
+            then
+              make citypecoverage
+            fi
+      - run:
+          when: always
+          name: Archive type coverage report
+          command: |
+            tar -czvf typecover.tar.gz typecover
       - store_test_results:
           path: test-reports
       - store_artifacts:
