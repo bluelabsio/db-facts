@@ -16,9 +16,9 @@ class TestRunner(unittest.TestCase):
                            mock_stderr,
                            mock_db):
         runner = Runner()
-        with self.assertRaises(SystemExit):
-            runner.run(['/bin/db-facts'])
-        self.assertIn('the following arguments are required: dbname',
+        out = runner.run(['/bin/db-facts'])
+        self.assertEqual(out, 1)
+        self.assertIn('Pull information about databases from',
                       mock_stderr.getvalue())
         self.assertEqual(mock_stdout.getvalue(), '')
 

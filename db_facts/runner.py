@@ -72,6 +72,9 @@ class Runner():
             sh_parser.set_defaults(func=dump_sh)
 
             args = parser.parse_args(argv[1:])
+            if 'func' not in args:
+                parser.print_help(file=sys.stderr)
+                return 1
             args.func(args)
 
             return 0
