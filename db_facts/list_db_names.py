@@ -23,4 +23,6 @@ def list_db_names() -> None:
         in db_descriptions.items()
     ]
     sorted_output = sorted(list(output))
-    print("\n".join(sorted_output))
+    print("Available db_names:")
+    print("* ", end='')
+    print("\n* ".join(sorted_output))

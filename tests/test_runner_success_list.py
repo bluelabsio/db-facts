@@ -46,5 +46,6 @@ class TestRunnerList(unittest.TestCase):
         mock_load_config.assert_called_with()
         self.assertEqual(mock_stderr.getvalue(), '')
         self.assertEqual(mock_stdout.getvalue(),
-                         ("mydb1 (My favorite database)\n"
-                          "mydb2\n"))
+                         ("Available db_names:\n"
+                          "* mydb1 (My favorite database)\n"
+                          "* mydb2\n"))
