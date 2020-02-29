@@ -54,8 +54,7 @@ class Runner():
             json_parser.set_defaults(func=dump_json)
 
             config_parser = subparsers.add_parser('config',
-                                                  help='Report output in db-facts config format '
-                                                  '(default: env vars)')
+                                                  help='Report output in db-facts config format')
             config_parser.add_argument('dbname', nargs=1,
                                        help=('Friendly name of database '
                                              '(e.g., "redshift", "dmv", '

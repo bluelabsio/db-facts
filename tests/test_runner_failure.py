@@ -55,7 +55,7 @@ positional arguments:
   {list,json,config,sh}
     list                List available dbnames
     json                Report output in JSON format
-    config              Report output in db-facts config format (default: env vars)
+    config              Report output in db-facts config format
     sh                  Report output in Bourne shell envionment variable format
 
 optional arguments:
