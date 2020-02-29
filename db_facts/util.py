@@ -1,6 +1,6 @@
-from typing import List
+from typing import List, Union
 import subprocess
 
 
-def backtick(cmd: List[str]) -> str:
+def backtick(cmd: Union[str, List[str]]) -> str:
     return subprocess.check_output(cmd).decode('utf-8').strip()
