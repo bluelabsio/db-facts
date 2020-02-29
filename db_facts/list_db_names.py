@@ -1,6 +1,13 @@
 from .config import load_config
 
 
+def format_db_description(db_name, db_description):
+    if db_description is not None:
+        return f"{db_name} ({db_description})"
+    else:
+        return db_name
+
+
 def list_db_names() -> None:
     dbcli_config = load_config()
 
@@ -10,12 +17,6 @@ def list_db_names() -> None:
         for db_name, db_config
         in dbs.items()
     }
-
-    def format_db_description(db_name, db_description):
-        if db_description is not None:
-            return f"{db_name} ({db_description})"
-        else:
-            return db_name
 
     output = [
         format_db_description(db_name, db_description)

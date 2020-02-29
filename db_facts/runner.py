@@ -14,31 +14,30 @@ class Runner():
     def __init__(self) -> None:
         pass
 
+    def dump_json(self, args: argparse.Namespace) -> None:
+        db_name_str: str = args.dbname[0]
+        db_name = db_name_str.split('-')
+
+        db_info = db(db_name)
+
+        print(json.dumps(db_info, sort_keys=True, indent=4))
+
+    def dump_config(self, args: argparse.Namespace):
+        db_name_str: str = args.dbname[0]
+        db_name = db_name_str.split('-')
+
+        db_info = db(db_name)
+        print(config_yaml(db_name_str, db_info), end='')
+
+    def dump_sh(self, args: argparse.Namespace):
+        db_name_str: str = args.dbname[0]
+        db_name = db_name_str.split('-')
+
+        db_info = db(db_name)
+        print_exports(db_info)
+
     def run(self, argv: List[str]) -> int:
         try:
-
-            def dump_json(args: argparse.Namespace) -> None:
-                db_name_str: str = args.dbname[0]
-                db_name = db_name_str.split('-')
-
-                db_info = db(db_name)
-
-                print(json.dumps(db_info, sort_keys=True, indent=4))
-
-            def dump_config(args: argparse.Namespace):
-                db_name_str: str = args.dbname[0]
-                db_name = db_name_str.split('-')
-
-                db_info = db(db_name)
-                print(config_yaml(db_name_str, db_info), end='')
-
-            def dump_sh(args: argparse.Namespace):
-                db_name_str: str = args.dbname[0]
-                db_name = db_name_str.split('-')
-
-                db_info = db(db_name)
-                print_exports(db_info)
-
             desc = 'Pull information about databases from user-friendly names'
             parser = argparse.ArgumentParser(prog='db-facts', description=desc)
             subparsers = parser.add_subparsers()
@@ -51,7 +50,7 @@ class Runner():
                                      help=('Friendly name of database '
                                            '(e.g., "redshift", "dmv", '
                                            '"abc-dev-dbadmin")'))
-            json_parser.set_defaults(func=dump_json)
+            json_parser.set_defaults(func=self.dump_json)
 
             config_parser = subparsers.add_parser('config',
                                                   help='Report output in db-facts config format')
@@ -59,7 +58,7 @@ class Runner():
                                        help=('Friendly name of database '
                                              '(e.g., "redshift", "dmv", '
                                              '"abc-dev-dbadmin")'))
-            config_parser.set_defaults(func=dump_config)
+            config_parser.set_defaults(func=self.dump_config)
 
             sh_parser = subparsers.add_parser('sh',
                                               help=('Report output in Bourne shell envionment '
@@ -68,7 +67,7 @@ class Runner():
                                    help=('Friendly name of database '
                                          '(e.g., "redshift", "dmv", '
                                          '"abc-dev-dbadmin")'))
-            sh_parser.set_defaults(func=dump_sh)
+            sh_parser.set_defaults(func=self.dump_sh)
 
             args = parser.parse_args(argv[1:])
             if 'func' not in args:
