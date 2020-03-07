@@ -1,5 +1,28 @@
 # db-facts configuration
 
+## Exporting configuration from an existing machine
+
+If you have an existing machine using db-facts, you can export
+your config to the new machine:
+
+1. On the new machine, run:
+    ```sh
+    mkdir -p ~/.db-facts.d
+    ```
+2. Open up the `~/.db-facts.d/whatever-database-name.yml` file for editing
+3. On your desktop, run:
+   ```sh
+   db-facts config whatever-database-name`
+   ```
+4. Paste the contents into the new file.
+
+Note that this will export passwords in plaintext - if you need
+something more secure, either copy your config verbatim from the
+original files, or see below for configuring db-facts to use whatever
+secrets management system is available on the new machine.
+
+## Creating new configuration
+
 db-facts currently bundles a default configuration located at
 [db_facts/dbcli.yml](./db_facts/dbcli.yml). You can add additional configs or
 override existing ones by using custom configs. db-facts looks for configs in
