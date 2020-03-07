@@ -3,7 +3,7 @@ from typing import Optional
 
 
 def db_config(dbcli_config: DBCLIConfig, db_name: DBName) -> Optional[DBConfig]:
-    dbs = dbcli_config['dbs']
+    dbs = dbcli_config.get('dbs', {})
 
     config_name = "-".join(db_name)
 

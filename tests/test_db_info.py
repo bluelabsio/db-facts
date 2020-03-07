@@ -1,3 +1,4 @@
+import db_facts
 from db_facts.db_info import db
 import unittest
 from unittest.mock import patch
@@ -79,3 +80,13 @@ class TestDBInfo(unittest.TestCase):
             assert_called_with(['frazzle', 'mumble'],
                                mock_dbcli_config['dbs']['frazzle'],
                                mock_dbcli_config)
+
+    def test_db_info_empty_config(self,
+                                  mock_lpass_field,
+                                  mock_db_info_from_lpass,
+                                  mock_pull_jinja_context):
+        mock_pull_jinja_context.return_value = ({}, {})
+        with self.assertRaises(db_facts.errors.UserErrorException) as e:
+            db(['frazzle', 'mumble'], dbcli_config={})
+        self.assertTrue('frazzle-mumble is not a valid DB name' in str(e.exception),
+                        str(e.exception))
