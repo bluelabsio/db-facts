@@ -7,9 +7,9 @@ your config to the new machine:
 
 1. On the new machine, run:
     ```sh
-    mkdir -p ~/.db-facts.d
+    mkdir -p ~/.dbfacts.d
     ```
-2. Open up the `~/.db-facts.d/whatever-database-name.yml` file for editing
+2. Open up the `~/.dbfacts.d/whatever-database-name.yml` file for editing
 3. On your desktop, run:
    ```sh
    db-facts config whatever-database-name`
