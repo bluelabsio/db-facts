@@ -12,7 +12,7 @@ your config to the new machine:
 2. Open up the `~/.dbfacts.d/whatever-database-name.yml` file for editing
 3. On your desktop, run:
    ```sh
-   db-facts config whatever-database-name`
+   db-facts config whatever-database-name
    ```
 4. Paste the contents into the new file.
 
