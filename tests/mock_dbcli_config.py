@@ -1,5 +1,5 @@
 mock_dbcli_config = {
-    'db_connect_method': {
+    'exports_from': {
         'lpass': {
             'pull_lastpass_from': "{{ lastpass_entry }}",
         },
@@ -16,25 +16,25 @@ mock_dbcli_config = {
     },
     'dbs': {
         'baz': {
-            'db_connect_method': 'my-json-script',
+            'exports_from': 'my-json-script',
         },
         'bing': {
-            'db_connect_method': 'invalid-method',
+            'exports_from': 'invalid-method',
         },
         'bazzle': {
-            'db_connect_method': 'lpass',
+            'exports_from': 'lpass',
             'lastpass_entry': 'lpass entry name'
         },
         'bazzle-bing': {
-            'db_connect_method': 'lpass',
+            'exports_from': 'lpass',
             'lastpass_entry': 'different lpass entry name'
         },
         'frazzle': {
-            'db_connect_method': 'lpass',
+            'exports_from': 'lpass',
             'lastpass_entry': 'lpass entry name'
         },
         'frink': {
-            'db_connect_method': 'lpass_user_and_pass_only',
+            'exports_from': 'lpass_user_and_pass_only',
             'lastpass_entry': 'lpass entry name',
             'jinja_context_name': 'standard',
             'exports': {

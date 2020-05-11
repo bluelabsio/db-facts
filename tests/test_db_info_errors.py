@@ -15,9 +15,9 @@ class TestDBInfoErrors(unittest.TestCase):
         with self.assertRaises(UserErrorException):
             db(['not-there'], dbcli_config=mock_dbcli_config)
 
-    def test_db_info_invalid_db_connect_method(self,
-                                               mock_subprocess,
-                                               mock_pull_jinja_context):
+    def test_db_info_invalid_exports_from(self,
+                                          mock_subprocess,
+                                          mock_pull_jinja_context):
         mock_pull_jinja_context.return_value = ({}, {})
         with self.assertRaises(SyntaxError):
             db(['bing'], dbcli_config=mock_dbcli_config)
