@@ -78,4 +78,4 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 ## Development
 
-See [DEVELOPMENT.md](./DEVELOPMENT.md)
+See [DEVELOPMENT.md](./docs/DEVELOPMENT.md)
