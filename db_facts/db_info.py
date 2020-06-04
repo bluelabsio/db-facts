@@ -10,7 +10,10 @@ from .db_config import db_config
 
 
 def db(db_name: DBName, dbcli_config: DBCLIConfig = None) -> DBFacts:
-    """Get connection info for specified database."""
+    """Get connection info for specified database.
+
+    :param db_name: Alias for the particular database endpoint and account to connect to.  ['a','b','c'] corresponds to 'a-b-c' on the db-facts command-line.
+    """
 
     if dbcli_config is None:
         dbcli_config = load_config()
