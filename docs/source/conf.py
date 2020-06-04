@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath('../../db-facts/'))
 # -- Project information -----------------------------------------------------
 
 project = 'db-facts'
-copyright = '2020, Vince Broz'
+copyright = '2020 BlueLabs Analytics, Inc.'
 author = 'Vince Broz'
 
 # The full version, including alpha/beta/rc tags
