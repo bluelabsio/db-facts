@@ -10,6 +10,7 @@ Welcome to db-facts's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   db_facts
 
 
 Indices and tables
