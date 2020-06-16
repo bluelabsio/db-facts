@@ -12,30 +12,6 @@ db\_facts.base64\_jinja\_context module
    :undoc-members:
    :show-inheritance:
 
-db\_facts.config module
------------------------
-
-.. automodule:: db_facts.config
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-db\_facts.config\_yaml module
------------------------------
-
-.. automodule:: db_facts.config_yaml
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-db\_facts.db\_config module
----------------------------
-
-.. automodule:: db_facts.db_config
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 db\_facts.db\_facts\_types module
 ---------------------------------
 
@@ -48,14 +24,6 @@ db\_facts.db\_info module
 -------------------------
 
 .. automodule:: db_facts.db_info
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-db\_facts.db\_type module
--------------------------
-
-.. automodule:: db_facts.db_type
    :members:
    :undoc-members:
    :show-inheritance:
@@ -76,14 +44,6 @@ db\_facts.errors module
    :undoc-members:
    :show-inheritance:
 
-db\_facts.exports module
-------------------------
-
-.. automodule:: db_facts.exports
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 db\_facts.jinja\_context module
 -------------------------------
 
@@ -91,55 +51,6 @@ db\_facts.jinja\_context module
    :members:
    :undoc-members:
    :show-inheritance:
-
-db\_facts.list\_db\_names module
---------------------------------
-
-.. automodule:: db_facts.list_db_names
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-db\_facts.lpass module
-----------------------
-
-.. automodule:: db_facts.lpass
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-db\_facts.main module
----------------------
-
-.. automodule:: db_facts.main
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-db\_facts.runner module
------------------------
-
-.. automodule:: db_facts.runner
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-db\_facts.template module
--------------------------
-
-.. automodule:: db_facts.template
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-db\_facts.util module
----------------------
-
-.. automodule:: db_facts.util
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 
 Module contents
 ---------------
