@@ -32,6 +32,10 @@ release = '4.0.0'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    # The default sphinx doesn't seem to set TYPE_CHECKING, which
+    # results in dropping our use of TypedDict, Literal and other
+    # things we don't use by default to avoid extra dependencies.
+    'sphinx_autodoc_typehints',
 ]
 
 master_doc = 'index'
@@ -56,3 +60,12 @@ html_theme = 'sphinx_rtd_theme'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+
+# -- Options for type hint output --------------------------------------------
+
+#
+# Ensure TYPE_CHECKING is set to True so we document using types from
+# typing_extensions (e.g., TypedDict)
+#
+set_type_checking_flag = True

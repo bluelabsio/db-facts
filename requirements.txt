@@ -9,5 +9,6 @@ lxml # needed for mypy coverage report
 wheel # needed to publish to PyPI in CircleCI
 twine # needed to publish to PyPI in CircleCI
 sphinx # used to generate and upload docs
+sphinx-autodoc-typehints # used to handle type hints
 sphinx-rtd-theme # used to style docs for readthedocs.io
 recommonmark # used to be able to use sphinx with markdown
