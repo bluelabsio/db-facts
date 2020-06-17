@@ -3,6 +3,9 @@ from .db_facts_types import DBName
 
 
 class UserErrorException(Exception):
+    """
+    Raised upon an error related to the inputs to the db() function.
+    """
     pass
 
 
