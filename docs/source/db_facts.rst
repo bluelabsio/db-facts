@@ -36,14 +36,6 @@ db\_facts.errors module
    :undoc-members:
    :show-inheritance:
 
-db\_facts.jinja\_context module
--------------------------------
-
-.. automodule:: db_facts.jinja_context
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Module contents
 ---------------
 
