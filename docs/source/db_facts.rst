@@ -20,14 +20,6 @@ db\_facts.db\_facts\_types module
    :undoc-members:
    :show-inheritance:
 
-db\_facts.db\_info module
--------------------------
-
-.. automodule:: db_facts.db_info
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 db\_facts.env\_jinja\_context module
 ------------------------------------
 
