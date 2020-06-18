@@ -12,14 +12,6 @@ db\_facts.base64\_jinja\_context module
    :undoc-members:
    :show-inheritance:
 
-db\_facts.db\_facts\_types module
----------------------------------
-
-.. automodule:: db_facts.db_facts_types
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 db\_facts.env\_jinja\_context module
 ------------------------------------
 
