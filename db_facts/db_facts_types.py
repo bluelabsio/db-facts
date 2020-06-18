@@ -35,6 +35,7 @@ if TYPE_CHECKING:
 
         type: str
         "Database type (canonical examples: postgres, vertica, mysql, redshift, bigquery)"
+
         protocol: str
         """Database protocol type (often the same value as 'type', but may
         vary for databases like Redshift which offer protocol
