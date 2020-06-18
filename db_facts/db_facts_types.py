@@ -18,8 +18,10 @@ if TYPE_CHECKING:
     # databases, feel free to PR additions here (or maintain your own
     # type/ignore this one, of course).
     class DBFacts(TypedDict, total=False):
-        """This describes the output of the db() method - a dict of various
-        facts about the database in question.
+        """This is a dictionary type which describes the output of the db()
+        method - a dict of various facts about the database in
+        question.  All keys are optional except 'type', and keys
+        should only be provided if relevant to the database type.
         """
 
         user: str
