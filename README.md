@@ -31,7 +31,10 @@ export DB_PROTOCOL
 DB_PROTOCOL=postgres
 ```
 
-To do this, it relies on a config file ("dbcli.yml") which teaches it
+For details on the potential facts returned, see the
+[API reference](https://db-facts.readthedocs.io/en/published_docs/db_facts.html#db_facts.DBFacts).
+
+`db-facts` relies on a config file ("dbcli.yml") which teaches it
 how to parse the user-friendly coordinates.  Much of the heavy lifting
 in the parsing part is done
 by
@@ -39,17 +42,14 @@ by
 which sets some variables and functions that can be used in jinja
 templates within the config file.
 
-This is part of the suite of programs which allow a user to type in
-things like `db redshift` and connect via their own credentials to the
-configured database named 'redshift'.  Other parts of this chain can
-be found in the [ws-scripts](https://github.com/bluelabsio/ws-scripts)
-repo.
-
 If you need to set the instructions immediately to your environment
 variables, you can do this with the command:
 ```sh
 eval $(db-facts redshift)
 ```
+
+You can also access `db-facts` via a Python API; for details, see the
+[API reference](https://db-facts.readthedocs.io/en/published_docs/db_facts.html#module-db_facts).
 
 ## Configuration
 
