@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-python_version=3.8.2
+python_version=3.8.3
 # zipimport.ZipImportError: can't decompress data; zlib not available:
 #    You may need `xcode-select --install` on OS X
 #    https://github.com/pyenv/pyenv/issues/451#issuecomment-151336786
