@@ -13,6 +13,7 @@ def db(db_name: DBName, dbcli_config: DBCLIConfig = None) -> DBFacts:
     """Get connection info for specified database.
 
     :param db_name: Alias for the particular database endpoint and account to connect to.  ['a','b','c'] corresponds to 'a-b-c' on the db-facts command-line.
+    :raises UserErrorException: Raised if db_name cannot be found.
     """
 
     if dbcli_config is None:
