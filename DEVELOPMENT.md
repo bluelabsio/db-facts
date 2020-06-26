@@ -32,7 +32,7 @@ breaking change.
 ## Documentation
 
 API reference documentation is pushed up to
-[readthedocs](https://db-facts.readthedocs.io/en/published_docs/) by a
+[readthedocs](https://db-facts.readthedocs.io/en/latest/) by a
 GitHub webhook.
 
 To create docs, run this from the `docs/` directory:

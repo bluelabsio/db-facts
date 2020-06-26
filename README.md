@@ -32,7 +32,7 @@ DB_PROTOCOL=postgres
 ```
 
 For details on the potential facts returned, see the
-[API reference](https://db-facts.readthedocs.io/en/published_docs/db_facts.html#db_facts.DBFacts).
+[API reference](https://db-facts.readthedocs.io/en/latest/db_facts.html#db_facts.DBFacts).
 
 `db-facts` relies on a config file ("dbcli.yml") which teaches it
 how to parse the user-friendly coordinates.  Much of the heavy lifting
@@ -49,7 +49,7 @@ eval $(db-facts redshift)
 ```
 
 You can also access `db-facts` via a Python API; for details, see the
-[API reference](https://db-facts.readthedocs.io/en/published_docs/db_facts.html#module-db_facts).
+[API reference](https://db-facts.readthedocs.io/en/latest/db_facts.html#module-db_facts).
 
 ## Configuration
 
