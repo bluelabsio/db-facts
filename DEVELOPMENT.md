@@ -28,3 +28,17 @@ db_facts>=a.x.y,<b.0.0
 
 This will make sure you don't get automatically updated into the next
 breaking change.
+
+## Documentation
+
+API reference documentation is pushed up to
+[readthedocs](https://db-facts.readthedocs.io/en/published_docs/) by a
+GitHub webhook.
+
+To create docs, run this from the `docs/` directory:
+
+* `make html`
+
+To view docs:
+
+* `open build/html/index.html`
