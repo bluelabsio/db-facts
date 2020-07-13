@@ -13,7 +13,7 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../../db-facts/'))
-
+import db_facts  # noqa
 
 # -- Project information -----------------------------------------------------
 
@@ -22,7 +22,7 @@ copyright = '2020 BlueLabs Analytics, Inc.'
 author = 'Vince Broz'
 
 # The full version, including alpha/beta/rc tags
-release = '4.0.0'
+release = db_facts.version.__version__
 
 
 # -- General configuration ---------------------------------------------------

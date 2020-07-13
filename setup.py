@@ -5,11 +5,20 @@ from decimal import Decimal
 from distutils.cmd import Command
 from setuptools import setup, find_packages
 from setuptools.command.install import install
+from typing import Optional
 import os
 import sys
 
 
-VERSION = '4.0.0'
+__version__: Optional[str] = None
+# Read in and set version variable without the overhead/requirements
+# of the rest of the package.
+#
+# https://milkr.io/kfei/5-common-patterns-to-version-your-Python-package/5
+dir_path = os.path.dirname(os.path.realpath(__file__))
+with open(os.path.join(dir_path, 'db_facts', 'version.py')) as f:
+    exec(f.read())
+    assert __version__ is not None
 
 
 # From https://circleci.com/blog/continuously-deploying-python-packages-to-pypi-with-circleci/
@@ -19,11 +28,11 @@ class VerifyVersionCommand(install):
 
     def run(self):
         tag = os.getenv('CIRCLE_TAG')
-        tag_formatted_version = f'v{VERSION}'
+        tag_formatted_version = f'v{__version__}'
 
         if tag != tag_formatted_version:
             info = "Git tag: {0} does not match the version of this app: {1}".format(
-                tag, VERSION
+                tag, __version__
             )
             sys.exit(info)
 
@@ -96,10 +105,10 @@ with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name='db_facts',
-      version=VERSION,
+      version=__version__,  # noqa
       description='Database connection configuration manager',
       long_description=long_description,
-      download_url=f'https://github.com/bluelabsio/db-facts/tarball/{VERSION}',
+      download_url=f'https://github.com/bluelabsio/db-facts/tarball/{__version__}',  # noqa
       author='Vince Broz',
       author_email='opensource@bluelabs.com',
       packages=find_packages(),
