@@ -109,8 +109,8 @@ dbs:
       bq_default_dataset_id: 'my_bigquery_dataset
 ```
 
-With this config, `db-facts mybigquerydb-myserviceuser` will show you the credentials,
-  including the decoded environment variable.  "Just Some Awesome
+With this config, `db-facts sh mybigquerydb-myserviceuser` will show
+you the credentials, including the decoded environment variable.
 
 ### Inline credentials
 

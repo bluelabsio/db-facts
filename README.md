@@ -45,7 +45,7 @@ templates within the config file.
 If you need to set the instructions immediately to your environment
 variables, you can do this with the command:
 ```sh
-eval $(db-facts redshift)
+eval $(db-facts sh redshift)
 ```
 
 You can also access `db-facts` via a Python API; for details, see the
