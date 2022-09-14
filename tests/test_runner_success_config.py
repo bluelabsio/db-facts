@@ -47,5 +47,5 @@ class TestRunnerSuccessConfig(unittest.TestCase):
                 }
             }
         }
-        self.assertEqual(yaml.load(mock_stdout.getvalue()),
+        self.assertEqual(yaml.safe_load(mock_stdout.getvalue()),
                          parsed_yaml_value)
