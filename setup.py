@@ -113,7 +113,7 @@ setup(name='db_facts',
       author_email='opensource@bluelabs.com',
       packages=find_packages(),
       package_data={"db_facts": ["py.typed"]},
-      install_requires=['jinja2', 'pyyaml'],
+      install_requires=['jinja2', 'pyyaml', 'boto3'],
       entry_points={
         'console_scripts': [
             'db_facts = db_facts.__main__:main'

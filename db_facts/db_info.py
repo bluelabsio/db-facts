@@ -5,6 +5,10 @@ from .jinja_context import pull_jinja_context
 from .errors import fail_on_invalid_db_name
 from .config import load_config
 from .lpass import pull_lastpass_username_password, db_info_from_lpass
+from .aws_secrets_manager import (
+    db_info_from_secrets_manager,
+    pull_aws_secrets_manager_username_password
+)
 from .db_facts_types import DBConfig, DBCLIConfig, DBFacts, DBName
 from .db_config import db_config
 
@@ -77,6 +81,24 @@ def db(db_name: DBName, dbcli_config: DBCLIConfig = None) -> DBFacts:
                                            (db_info, {}))
             additional_attributes = \
                 pull_lastpass_username_password(lastpass_entry_name)
+            db_info['exports'].update(additional_attributes)
+        elif 'pull_secrets_manager_from' in dbcli_config['exports_from'][method]:
+            template_for_secrets_manager_entry_name =\
+                dbcli_config['exports_from'][method]['pull_secrets_manager_from']
+            secrets_manager_entry_name = template(template_for_secrets_manager_entry_name,
+                                                  (db_info, {}))
+            additional_attributes = \
+                db_info_from_secrets_manager(secrets_manager_entry_name)
+            db_info['exports'].update(additional_attributes)
+        elif 'pull_secrets_manager_username_password_from' in \
+             dbcli_config['exports_from'][method]:
+            method = dbcli_config['exports_from'][method]
+            template_for_secrets_manager_entry_name =\
+                method['pull_secrets_manager_username_password_from']
+            secrets_manager_entry_name = template(template_for_secrets_manager_entry_name,
+                                           (db_info, {}))
+            additional_attributes = \
+                pull_aws_secrets_manager_username_password(secrets_manager_entry_name)
             db_info['exports'].update(additional_attributes)
         else:
             raise SyntaxError(f'Did not understand exports_from {method}')
