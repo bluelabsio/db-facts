@@ -48,6 +48,11 @@ variables, you can do this with the command:
 eval $(db-facts sh redshift)
 ```
 
+If you need an airflow connection URI, you can use the airflow output option:
+```sh
+export AIRFLOW_CONN_REDSHIFT_DEFAULT=$(db-facts airflow redshift)
+```
+
 You can also access `db-facts` via a Python API; for details, see the
 [API reference](https://db-facts.readthedocs.io/en/latest/db_facts.html#module-db_facts).
 

@@ -1,7 +1,7 @@
 from __future__ import print_function
 import sys
 from .db_info import db
-from .exports import print_exports
+from .exports import print_exports, print_airflow
 from .list_db_names import list_db_names
 from .config_yaml import config_yaml
 from typing import List
@@ -36,6 +36,13 @@ class Runner():
         db_info = db(db_name)
         print_exports(db_info)
 
+    def dump_airflow(self, args: argparse.Namespace):
+        db_name_str: str = args.dbname[0]
+        db_name = db_name_str.split('-')
+
+        db_info = db(db_name)
+        print_airflow(db_info)
+
     def run(self, argv: List[str]) -> int:
         try:
             desc = 'Pull information about databases from user-friendly names'
@@ -68,6 +75,15 @@ class Runner():
                                          '(e.g., "redshift", "dmv", '
                                          '"abc-dev-dbadmin")'))
             sh_parser.set_defaults(func=self.dump_sh)
+
+            airflow_parser = subparsers.add_parser('airflow',
+                                                   help=('Report output in Airflow connection '
+                                                         'string format'))
+            airflow_parser.add_argument('dbname', nargs=1,
+                                        help=('Friendly name of database '
+                                              '(e.g., "redshift", "dmv", '
+                                              '"abc-dev-dbadmin")'))
+            airflow_parser.set_defaults(func=self.dump_airflow)
 
             args = parser.parse_args(argv[1:])
             if 'func' not in args:
