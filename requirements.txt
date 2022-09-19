@@ -8,6 +8,7 @@ mypy
 lxml # needed for mypy coverage report
 types-pyyaml # needed for mypy coverage report
 types-pkg-resources # needed for mypy coverage report
+boto3-stubs[essential] # needed for mypy coverage report
 wheel # needed to publish to PyPI in CircleCI
 twine # needed to publish to PyPI in CircleCI
 sphinx>=3 # used to generate and upload docs - sphinx-autodoc-typehints requires 4 or better per https://github.com/agronholm/sphinx-autodoc-typehints/pull/138

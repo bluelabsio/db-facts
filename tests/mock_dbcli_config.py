@@ -13,6 +13,12 @@ mock_dbcli_config = {
         },
         'invalid-method': {
         },
+        'secrets_manager': {
+            'pull_secrets_manager_from': "{{ secrets_manager_entry }}"
+        },
+        'secrets_manager_user_and_pass_only': {
+            'pull_secrets_manager_username_password_from': "{{ secrets_manager_entry }}"
+        },
     },
     'dbs': {
         'baz': {
@@ -29,6 +35,10 @@ mock_dbcli_config = {
             'exports_from': 'lpass',
             'lastpass_entry': 'different lpass entry name'
         },
+        'fromage': {
+            'exports_from': 'secrets_manager',
+            'secrets_manager_entry': 'secrets manager entry name'
+        },
         'frazzle': {
             'exports_from': 'lpass',
             'lastpass_entry': 'lpass entry name'
@@ -36,6 +46,15 @@ mock_dbcli_config = {
         'frink': {
             'exports_from': 'lpass_user_and_pass_only',
             'lastpass_entry': 'lpass entry name',
+            'jinja_context_name': 'standard',
+            'exports': {
+                'some_additional': 'export',
+                'a_numbered_export': 123
+            },
+        },
+        'fronk': {
+            'exports_from': 'secrets_manager_user_and_pass_only',
+            'secrets_manager_entry': 'secrets manager entry name',
             'jinja_context_name': 'standard',
             'exports': {
                 'some_additional': 'export',
