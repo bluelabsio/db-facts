@@ -47,16 +47,17 @@ class TestRunner(unittest.TestCase):
             runner.run(['/bin/db-facts', '--help'])
         self.assertEqual(mock_stderr.getvalue(), '')
         helpstr = """
-usage: db-facts [-h] {list,json,config,sh} ...
+usage: db-facts [-h] {list,json,config,sh,airflow} ...
 
 Pull information about databases from user-friendly names
 
 positional arguments:
-  {list,json,config,sh}
+  {list,json,config,sh,airflow}
     list                List available dbnames
     json                Report output in JSON format
     config              Report output in db-facts config format
     sh                  Report output in Bourne shell envionment variable format
+    airflow             Report output in Airflow connection string format
 
 optional arguments:
   -h, --help            show this help message and exit"""
