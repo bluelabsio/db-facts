@@ -1,5 +1,5 @@
 from subprocess import check_output
-from .db_facts_types import LastPassUsernamePassword
+from .db_facts_types import LastPassUsernamePassword, LastPassAWSIAM
 from .db_type import canonicalize_db_type, db_protocol
 
 
@@ -7,6 +7,14 @@ def pull_lastpass_username_password(lastpass_entry_name: str) -> LastPassUsernam
     return {
         'user': lpass_field(lastpass_entry_name, 'username'),
         'password': lpass_field(lastpass_entry_name, 'password'),
+    }
+
+
+def pull_lastpass_aws_iam(lastpass_entry_name: str) -> LastPassAWSIAM:
+    result = pull_lastpass_username_password(lastpass_entry_name)
+    return {
+        'aws_access_key_id': result['user'],
+        'aws_secret_access_key': result['password']
     }
 
 

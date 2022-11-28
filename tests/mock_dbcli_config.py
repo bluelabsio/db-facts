@@ -6,6 +6,9 @@ mock_dbcli_config = {
         'lpass_user_and_pass_only': {
             'pull_lastpass_username_password_from': "{{ lastpass_entry }}",
         },
+        'lpass_aws_iam': {
+            'pull_lastpass_aws_iam': "{{ lastpass_entry }}"
+        },
         'my-json-script': {
             'json_script': [
                 'some-custom-json-script'
@@ -34,6 +37,10 @@ mock_dbcli_config = {
         'bazzle-bing': {
             'exports_from': 'lpass',
             'lastpass_entry': 'different lpass entry name'
+        },
+        'bazzle-boozle': {
+            'exports_from': 'lpass_aws_iam',
+            'lastpass_entry': 'lpass entry name'
         },
         'fromage': {
             'exports_from': 'secrets_manager',
