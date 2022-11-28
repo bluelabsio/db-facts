@@ -48,6 +48,21 @@ variables, you can do this with the command:
 eval $(db-facts sh redshift)
 ```
 
+For AWS IAM credentials in Lastpass, ensure that this block exists under
+`exports_from:` in your db-facts config:
+```
+  lpass_aws_iam:
+    pull_lastpass_aws_iam: "{{ lastpass_entry }}"
+```
+and set up a db credential with export_type `lpass_aws_iam`, for example:
+```
+  aws_user_example:
+    exports_from: lpass_aws_iam
+    lastpass_entry: 'AWS IAM: example_user'
+```
+You can then credential your shell with this one-liner:
+`eval $(db-facts sh aws_user_example)`
+
 You can also access `db-facts` via a Python API; for details, see the
 [API reference](https://db-facts.readthedocs.io/en/latest/db_facts.html#module-db_facts).
 
