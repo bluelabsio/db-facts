@@ -70,3 +70,32 @@ class TestDBInfoLastPass(unittest.TestCase):
             assert_called_with(['frink'],
                                mock_dbcli_config['dbs']['frink'],
                                mock_dbcli_config)
+
+    def test_db_info_pull_lastpass_aws_iam(self,
+                                           mock_lpass_field,
+                                           mock_db_info_from_lpass,
+                                           mock_pull_jinja_context):
+
+        lpass_entry = {
+            'username': 'user',
+            'password': 'password',
+        }
+
+        def fake_lpass_field(entry_name, field_name):
+            assert entry_name == 'lpass entry name'
+            return lpass_entry[field_name]
+
+        mock_lpass_field.side_effect = fake_lpass_field
+        expected_result = {
+            'aws_secret_access_key': 'password',
+            'aws_access_key_id': 'user',
+            'connection_type': 'direct',
+        }
+        mock_pull_jinja_context.return_value = ({}, {})
+        db_facts = db(['bazzle-boozle'], dbcli_config=mock_dbcli_config)
+        mock_lpass_field.assert_called_with('lpass entry name', 'password')
+        self.assertEqual(expected_result, db_facts)
+        mock_pull_jinja_context.\
+            assert_called_with(['bazzle-boozle'],
+                               mock_dbcli_config['dbs']['bazzle-boozle'],
+                               mock_dbcli_config)

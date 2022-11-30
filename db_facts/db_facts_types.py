@@ -65,6 +65,7 @@ else:
     DBFacts = Dict[str, Any]
 DBName = List[str]
 LastPassUsernamePassword = Dict[str, str]
+LastPassAWSIAM = Dict[str, str]
 AWSSecret = Any
 AWSSecretUsernamePassword = Dict[str, str]
 DBConfig = Dict[str, Any]
