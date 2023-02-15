@@ -22,6 +22,7 @@ class TestRunner(unittest.TestCase):
             'port': 123,
             'database': 'dbname',
             'lastpass_share_name_suffix': 'lastpass_share_name_suffix',
+            'not-valid*_characters1': 'whatever',
             'connection_type': 'connection_type',
         }
 
@@ -38,6 +39,8 @@ class TestRunner(unittest.TestCase):
                          'export LASTPASS_SHARE_NAME_SUFFIX\n'
                          'LASTPASS_SHARE_NAME_SUFFIX='
                          'lastpass_share_name_suffix\n'
+                         'export NOTVALID_CHARACTERS1\n'
+                         'NOTVALID_CHARACTERS1=whatever\n'
                          'export DB_PASSWORD\n'
                          'DB_PASSWORD=password\n'
                          'export DB_PORT\n'
