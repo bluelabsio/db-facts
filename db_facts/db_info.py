@@ -4,7 +4,7 @@ from .template import template, template_any
 from .jinja_context import pull_jinja_context
 from .errors import fail_on_invalid_db_name
 from .config import load_config
-from .lpass import pull_lastpass_username_password, db_info_from_lpass, pull_lastpass_aws_iam
+from .lpass import pull_lastpass_username_password, db_info_from_lpass, pull_lastpass_aws_iam, db_info_from_secretsmanager
 from .aws_secrets_manager import (
     db_info_from_secrets_manager,
     pull_aws_secrets_manager_username_password
@@ -13,7 +13,7 @@ from .db_facts_types import DBConfig, DBCLIConfig, DBFacts, DBName
 from .db_config import db_config
 
 
-def db(db_name: DBName, dbcli_config: DBCLIConfig = None) -> DBFacts:
+def db(db_name: DBName, dbcli_config: DBCLIConfig = None, secret_type:str=None) -> DBFacts:
     """Get connection info for specified database.
 
     :param db_name: Alias for the particular database endpoint and account to connect to.  ['a','b','c'] corresponds to 'a-b-c' on the db-facts command-line.
@@ -69,9 +69,14 @@ def db(db_name: DBName, dbcli_config: DBCLIConfig = None) -> DBFacts:
                 dbcli_config['exports_from'][method]['pull_lastpass_from']
             lastpass_entry_name = template(template_for_lastpass_entry_name,
                                            (db_info, {}))
-            additional_attributes = \
-                db_info_from_lpass(lastpass_entry_name)
-            db_info['exports'].update(additional_attributes)
+            if secret_type == '--lpass':
+                additional_attributes = \
+                    db_info_from_lpass(lastpass_entry_name)
+                db_info['exports'].update(additional_attributes)
+            elif secret_type == '--aws':
+                additional_attributes = \
+                    db_info_from_secretsmanager(lastpass_entry_name)
+                db_info['exports'].update(additional_attributes)
         elif 'pull_lastpass_username_password_from' in \
              dbcli_config['exports_from'][method]:
             method = dbcli_config['exports_from'][method]
