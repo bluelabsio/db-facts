@@ -30,7 +30,7 @@ class Runner():
         print(config_yaml(db_name_str, db_info), end='')
 
     def dump_sh(self, args: argparse.Namespace):
-        secret_type = '--lpass' if args.lpass else '--aws'
+        secret_type = '--aws' if args.aws else '--lpass'
         db_name_str: str = args.dbname[0]
         db_name = db_name_str.split('-')
         db_info = db(db_name=db_name, secret_type=secret_type)

@@ -4,11 +4,12 @@ from .template import template, template_any
 from .jinja_context import pull_jinja_context
 from .errors import fail_on_invalid_db_name
 from .config import load_config
-from .lpass import pull_lastpass_username_password, db_info_from_lpass, db_info_from_secretsmanager
-# from .aws_secrets_manager import (
-#     db_info_from_secrets_manager,
-#     pull_aws_secrets_manager_username_password
-# )
+from .lpass import pull_lastpass_username_password, db_info_from_lpass
+from .aws_secrets_manager import (
+    db_info_from_secrets_manager,
+    pull_aws_secrets_manager_username_password,
+    translate_secret_id_to_sm
+)
 from .db_facts_types import DBConfig, DBCLIConfig, DBFacts, DBName
 from .db_config import db_config
 
@@ -36,18 +37,18 @@ def db(db_name: DBName, dbcli_config: DBCLIConfig = None, secret_type:str=None) 
     if exports_from is not None:
         db_info['exports_from'] = exports_from
 
-    jinja_context = pull_jinja_context(db_name, config, dbcli_config)
-    for k in config.keys():
-        if k == 'jinja_context_name':
-            pass
-        elif k == 'exports':
-            db_info['exports'].update({
-                template(exportname,
-                         jinja_context): template_any(config['exports'][exportname], jinja_context)
-                for exportname in config['exports']
-            })
-        else:
-            db_info[k] = template(config[k], jinja_context)
+    # jinja_context = pull_jinja_context(db_name, config, dbcli_config)
+    # for k in config.keys():
+    #     if k == 'jinja_context_name':
+    #         pass
+    #     elif k == 'exports':
+    #         db_info['exports'].update({
+    #             template(exportname,
+    #                      jinja_context): template_any(config['exports'][exportname], jinja_context)
+    #             for exportname in config['exports']
+    #         })
+    #     else:
+    #         db_info[k] = template(config[k], jinja_context)
 
     if 'exports_from' in db_info:
         method = db_info.get('exports_from')
@@ -74,8 +75,9 @@ def db(db_name: DBName, dbcli_config: DBCLIConfig = None, secret_type:str=None) 
                     db_info_from_lpass(lastpass_entry_name)
                 db_info['exports'].update(additional_attributes)
             elif secret_type == '--aws':
+                lastpass_entry_name = translate_secret_id_to_sm(db_name[0])
                 additional_attributes = \
-                    db_info_from_secretsmanager(lastpass_entry_name)
+                    db_info_from_secrets_manager(lastpass_entry_name)
                 db_info['exports'].update(additional_attributes)
         elif 'pull_lastpass_username_password_from' in \
              dbcli_config['exports_from'][method]:
