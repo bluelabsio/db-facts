@@ -10,6 +10,7 @@ from .aws_secrets_manager import (
     pull_aws_secrets_manager_username_password,
     translate_secret_id_to_sm
 )
+from .onepass import db_info_from_onepass, translate_secret_id_to_onepass
 from .db_facts_types import DBConfig, DBCLIConfig, DBFacts, DBName
 from .db_config import db_config
 
@@ -78,6 +79,11 @@ def db(db_name: DBName, dbcli_config: DBCLIConfig = None, secret_type:str=None) 
                 lastpass_entry_name = translate_secret_id_to_sm(db_name[0])
                 additional_attributes = \
                     db_info_from_secrets_manager(lastpass_entry_name)
+                db_info['exports'].update(additional_attributes)
+            elif secret_type == '--onepass':
+                lastpass_entry_name = translate_secret_id_to_onepass(db_name[0])
+                additional_attributes = \
+                    db_info_from_onepass(lastpass_entry_name)
                 db_info['exports'].update(additional_attributes)
         elif 'pull_lastpass_username_password_from' in \
              dbcli_config['exports_from'][method]:

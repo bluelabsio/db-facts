@@ -11,6 +11,7 @@ import json
 
 
 class Runner():
+
     def __init__(self) -> None:
         pass
 
@@ -30,7 +31,11 @@ class Runner():
         print(config_yaml(db_name_str, db_info), end='')
 
     def dump_sh(self, args: argparse.Namespace):
-        secret_type = '--aws' if args.aws else '--lpass'
+        secret_type = '--lpass'
+        if args.aws:
+            secret_type = '--aws'
+        elif args.onepass:
+            secret_type = '--onepass'
         db_name_str: str = args.dbname[0]
         db_name = db_name_str.split('-')
         db_info = db(db_name=db_name, secret_type=secret_type)
@@ -74,6 +79,9 @@ class Runner():
             group.add_argument('--aws', action='store_true',
                                help=('type of secret service to pull from '
                                          '(e.g., "--aws"'))
+            group.add_argument('--onepass', action='store_true',
+                               help=('type of secret service to pull from '
+                                         '(e.g., "--onepass"'))
             sh_parser.set_defaults(func=self.dump_sh)
 
             args = parser.parse_args(argv[1:])
@@ -86,3 +94,6 @@ class Runner():
         except UserErrorException as e:
             print(str(e), file=sys.stderr)
             return 1
+
+runner = Runner()
+runner.run(argv=['db-facts', 'sh', 'cms'])
