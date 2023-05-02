@@ -31,14 +31,9 @@ class Runner():
         print(config_yaml(db_name_str, db_info), end='')
 
     def dump_sh(self, args: argparse.Namespace):
-        secret_type = '--lpass'
-        if args.aws:
-            secret_type = '--aws'
-        elif args.onepass:
-            secret_type = '--onepass'
         db_name_str: str = args.dbname[0]
         db_name = db_name_str.split('-')
-        db_info = db(db_name=db_name, secret_type=secret_type)
+        db_info = db(db_name=db_name)
         print_exports(db_info)
 
     def run(self, argv: List[str]) -> int:
@@ -72,16 +67,6 @@ class Runner():
                                    help=('Friendly name of database '
                                          '(e.g., "redshift", "dmv", '
                                          '"abc-dev-dbadmin")'))
-            group = sh_parser.add_mutually_exclusive_group()
-            group.add_argument('--lpass', action='store_true',
-                               help=('type of secret service to pull from '
-                                         '(e.g., "--lpass"'))
-            group.add_argument('--aws', action='store_true',
-                               help=('type of secret service to pull from '
-                                         '(e.g., "--aws"'))
-            group.add_argument('--onepass', action='store_true',
-                               help=('type of secret service to pull from '
-                                         '(e.g., "--onepass"'))
             sh_parser.set_defaults(func=self.dump_sh)
 
             args = parser.parse_args(argv[1:])

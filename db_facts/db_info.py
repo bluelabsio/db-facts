@@ -10,12 +10,12 @@ from .aws_secrets_manager import (
     pull_aws_secrets_manager_username_password,
     translate_secret_id_to_sm
 )
-from .onepass import db_info_from_onepass, translate_secret_id_to_onepass
+# from .onepass import db_info_from_onepass, translate_secret_id_to_onepass
 from .db_facts_types import DBConfig, DBCLIConfig, DBFacts, DBName
 from .db_config import db_config
 
 
-def db(db_name: DBName, dbcli_config: DBCLIConfig = None, secret_type:str=None) -> DBFacts:
+def db(db_name: DBName, dbcli_config: DBCLIConfig = None) -> DBFacts:
     """Get connection info for specified database.
 
     :param db_name: Alias for the particular database endpoint and account to connect to.  ['a','b','c'] corresponds to 'a-b-c' on the db-facts command-line.
@@ -38,18 +38,18 @@ def db(db_name: DBName, dbcli_config: DBCLIConfig = None, secret_type:str=None) 
     if exports_from is not None:
         db_info['exports_from'] = exports_from
 
-    # jinja_context = pull_jinja_context(db_name, config, dbcli_config)
-    # for k in config.keys():
-    #     if k == 'jinja_context_name':
-    #         pass
-    #     elif k == 'exports':
-    #         db_info['exports'].update({
-    #             template(exportname,
-    #                      jinja_context): template_any(config['exports'][exportname], jinja_context)
-    #             for exportname in config['exports']
-    #         })
-    #     else:
-    #         db_info[k] = template(config[k], jinja_context)
+    jinja_context = pull_jinja_context(db_name, config, dbcli_config)
+    for k in config.keys():
+        if k == 'jinja_context_name':
+            pass
+        elif k == 'exports':
+            db_info['exports'].update({
+                template(exportname,
+                         jinja_context): template_any(config['exports'][exportname], jinja_context)
+                for exportname in config['exports']
+            })
+        else:
+            db_info[k] = template(config[k], jinja_context)
 
     if 'exports_from' in db_info:
         method = db_info.get('exports_from')
@@ -71,20 +71,10 @@ def db(db_name: DBName, dbcli_config: DBCLIConfig = None, secret_type:str=None) 
                 dbcli_config['exports_from'][method]['pull_lastpass_from']
             lastpass_entry_name = template(template_for_lastpass_entry_name,
                                            (db_info, {}))
-            if secret_type == '--lpass':
-                additional_attributes = \
-                    db_info_from_lpass(lastpass_entry_name)
-                db_info['exports'].update(additional_attributes)
-            elif secret_type == '--aws':
-                lastpass_entry_name = translate_secret_id_to_sm(db_name[0])
-                additional_attributes = \
-                    db_info_from_secrets_manager(lastpass_entry_name)
-                db_info['exports'].update(additional_attributes)
-            elif secret_type == '--onepass':
-                lastpass_entry_name = translate_secret_id_to_onepass(db_name[0])
-                additional_attributes = \
-                    db_info_from_onepass(lastpass_entry_name)
-                db_info['exports'].update(additional_attributes)
+            lastpass_entry_name = translate_secret_id_to_sm(lastpass_entry_name)
+            additional_attributes = \
+                db_info_from_lpass(lastpass_entry_name)
+            db_info['exports'].update(additional_attributes)
         elif 'pull_lastpass_username_password_from' in \
              dbcli_config['exports_from'][method]:
             method = dbcli_config['exports_from'][method]
@@ -95,33 +85,33 @@ def db(db_name: DBName, dbcli_config: DBCLIConfig = None, secret_type:str=None) 
             additional_attributes = \
                 pull_lastpass_username_password(lastpass_entry_name)
             db_info['exports'].update(additional_attributes)
-        # elif 'pull_lastpass_aws_iam' in dbcli_config['exports_from'][method]:
-        #     method = dbcli_config['exports_from'][method]
-        #     template_for_lastpass_entry_name =\
-        #         method['pull_lastpass_aws_iam']
-        #     lastpass_entry_name = template(template_for_lastpass_entry_name,
-        #                                    (db_info, {}))
-        #     additional_attributes = \
-        #         pull_lastpass_aws_iam(lastpass_entry_name)
-        #     db_info['exports'].update(additional_attributes)
-        # elif 'pull_secrets_manager_from' in dbcli_config['exports_from'][method]:
-        #     template_for_secrets_manager_entry_name =\
-        #         dbcli_config['exports_from'][method]['pull_secrets_manager_from']
-        #     secrets_manager_entry_name = template(template_for_secrets_manager_entry_name,
-        #                                           (db_info, {}))
-        #     additional_attributes = \
-        #         db_info_from_secrets_manager(secrets_manager_entry_name)
-        #     db_info['exports'].update(additional_attributes)
-        # elif 'pull_secrets_manager_username_password_from' in \
-        #      dbcli_config['exports_from'][method]:
-        #     method = dbcli_config['exports_from'][method]
-        #     template_for_secrets_manager_entry_name =\
-        #         method['pull_secrets_manager_username_password_from']
-        #     secrets_manager_entry_name = template(template_for_secrets_manager_entry_name,
-        #                                    (db_info, {}))
-        #     additional_attributes = \
-        #         pull_aws_secrets_manager_username_password(secrets_manager_entry_name)
-        #     db_info['exports'].update(additional_attributes)
+        elif 'pull_lastpass_aws_iam' in dbcli_config['exports_from'][method]:
+            method = dbcli_config['exports_from'][method]
+            template_for_lastpass_entry_name =\
+                method['pull_lastpass_aws_iam']
+            lastpass_entry_name = template(template_for_lastpass_entry_name,
+                                           (db_info, {}))
+            additional_attributes = \
+                pull_lastpass_aws_iam(lastpass_entry_name)
+            db_info['exports'].update(additional_attributes)
+        elif 'pull_secrets_manager_from' in dbcli_config['exports_from'][method]:
+            template_for_secrets_manager_entry_name =\
+                dbcli_config['exports_from'][method]['pull_secrets_manager_from']
+            secrets_manager_entry_name = template(template_for_secrets_manager_entry_name,
+                                                  (db_info, {}))
+            additional_attributes = \
+                db_info_from_secrets_manager(secrets_manager_entry_name)
+            db_info['exports'].update(additional_attributes)
+        elif 'pull_secrets_manager_username_password_from' in \
+             dbcli_config['exports_from'][method]:
+            method = dbcli_config['exports_from'][method]
+            template_for_secrets_manager_entry_name =\
+                method['pull_secrets_manager_username_password_from']
+            secrets_manager_entry_name = template(template_for_secrets_manager_entry_name,
+                                           (db_info, {}))
+            additional_attributes = \
+                pull_aws_secrets_manager_username_password(secrets_manager_entry_name)
+            db_info['exports'].update(additional_attributes)
         else:
             raise SyntaxError(f'Did not understand exports_from {method}')
 
