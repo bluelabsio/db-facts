@@ -79,6 +79,3 @@ class Runner():
         except UserErrorException as e:
             print(str(e), file=sys.stderr)
             return 1
-
-runner = Runner()
-runner.run(argv=['db-facts', 'sh', 'cms'])

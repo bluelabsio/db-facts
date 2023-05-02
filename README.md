@@ -94,3 +94,10 @@ Type "help", "copyright", "credits" or "license" for more information.
 ## Development
 
 See [DEVELOPMENT.md](./DEVELOPMENT.md)
+
+
+## Plugins 
+Homebrew install db-facts tries to download the config file but pip doesnt have a way of managing this dependency. 
+The user has to download and install the config manaully.
+- Download the tar file: https://github.com/bluelabsio/bluelabs-db-facts/archive/refs/tags/v6.0.0.tar.gz
+- Install the archive: `pip install bluelabs-db-facts-6.0.0.tar.gz`
