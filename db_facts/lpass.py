@@ -73,3 +73,28 @@ def db_info_from_lpass(lpass_entry_name: str):
             'protocol': db_protocol(db_type),
             'port': port,
             'database': dbname}
+
+"""
+Takes in a lastpass entry name and username and retrieves the db values
+from the password manager. This method is specifically used for 
+the service manager accounts as the keys syntax are different.
+    Parameters:
+        lpass_entry_name (str): the service account name in secretsmanager
+        user (str): the user of the service account
+"""
+def cms_db_info_from_lpass(lpass_entry_name: str, user:str):
+    user = lpass_field(lpass_entry_name, f'{user}_user')
+    password = lpass_field(lpass_entry_name, f'{user}_password')
+    host = lpass_field(lpass_entry_name, 'host')
+    port = int(lpass_field(lpass_entry_name, 'port'))
+    db_type = 'vertica'
+    db_protocol = 'vertica'
+    dbname = lpass_field(lpass_entry_name, 'databse')
+
+    return {'password': password,
+            'host': host,
+            'user': user,
+            'type': db_type,
+            'protocol': db_protocol,
+            'port': port,
+            'database': dbname}
