@@ -4,7 +4,7 @@ from .template import template, template_any
 from .jinja_context import pull_jinja_context
 from .errors import fail_on_invalid_db_name
 from .config import load_config
-from .lpass import pull_lastpass_username_password, db_info_from_lpass, pull_lastpass_aws_iam, cms_db_info_from_lpass
+from .lpass import pull_lastpass_username_password, db_info_from_lpass, pull_lastpass_aws_iam, service_account_db_info_from_lpass
 from .aws_secrets_manager import (
     db_info_from_secrets_manager,
     pull_aws_secrets_manager_username_password
@@ -78,7 +78,7 @@ def db(db_name: DBName, dbcli_config: DBCLIConfig = None) -> DBFacts:
                 if user in service_accounts:
                     lastpass_entry_name = f'{stack}_vertica_service_accounts'
                     additional_attributes = \
-                        cms_db_info_from_lpass(lastpass_entry_name, stack, user)
+                        service_account_db_info_from_lpass(lastpass_entry_name, user)
                 else:
                     lastpass_entry_name = f'{stack}_vertica_{user}_creds'
                     additional_attributes = \

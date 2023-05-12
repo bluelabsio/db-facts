@@ -82,7 +82,7 @@ the service manager accounts as the keys syntax are different.
         lpass_entry_name (str): the service account name in secretsmanager
         user (str): the user of the service account
 """
-def cms_db_info_from_lpass(lpass_entry_name: str, user:str):
+def service_account_db_info_from_lpass(lpass_entry_name: str, user:str):
     user = lpass_field(lpass_entry_name, f'{user}_user')
     password = lpass_field(lpass_entry_name, f'{user}_password')
     host = lpass_field(lpass_entry_name, 'host')
