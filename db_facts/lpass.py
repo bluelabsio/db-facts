@@ -74,9 +74,10 @@ def db_info_from_lpass(lpass_entry_name: str):
             'port': port,
             'database': dbname}
 
+
 """
 Takes in a lastpass entry name and username and retrieves the db values
-from the password manager. This method is specifically used for 
+from the password manager. This method is specifically used for
 the service manager accounts as the keys syntax are different.
     Parameters:
         lpass_entry_name (str): the service account name in secretsmanager
@@ -89,7 +90,7 @@ def service_account_db_info_from_lpass(lpass_entry_name: str, user:str):
     port = int(lpass_field(lpass_entry_name, 'port'))
     db_type = 'vertica'
     db_protocol = 'vertica'
-    dbname = lpass_field(lpass_entry_name, 'databse')
+    dbname = lpass_field(lpass_entry_name, 'database')
 
     return {'password': password,
             'host': host,
