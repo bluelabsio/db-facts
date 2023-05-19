@@ -101,3 +101,34 @@ Homebrew install db-facts tries to download the config file but pip doesnt have 
 The user has to download and install the config manaully.
 - Download the tar file: https://github.com/bluelabsio/bluelabs-db-facts/archive/refs/tags/v6.0.0.tar.gz
 - Install the archive: `pip install bluelabs-db-facts-6.0.0.tar.gz`
+
+
+## Command Documentation 
+<b>Summary:</b> Retrieves the database connection properties depending on the format the user specifies.
+
+<b> Valid Database Names:</b> {seiu,redshift,everytown,...}, {seiu,redshift,everytown,...}-dbadmin, {seiu,redshift,everytown, ...}-username, bluehq-{job,cred,user,...}, singularity, cms{-prod,-test,-impl}{-dbadmin,}
+
+Note: If the database if of type CMS the password id and password key is converted from lpastpass to AWS secretsmanager.
+
+- The <b>service account</b> password id in secretsmanager has the naming ocnvention:  `{stack}_vertica_service_accounts`. The password key in secretsmanager has the naming convention: `{user}_password`.
+- The personal account database password id in secretsmanager has the naming convention: `{stack}_vertica_{user}_creds`. The password key in secretsmanager has the naming convention: `Password`.
+
+<br>
+
+#### <i>Report output in Bourne shell envionment variable format</i>
+<b>Run command:</b> `db-facts sh "[database name]"`
+
+<br>
+
+#### <i>List available dbnames</i>
+<b>Run command:</b> `db-facts ls "[database name]"`
+
+<br>
+
+#### <i>Report output in JSON format</i>
+<b>Run command:</b> `db-facts json "[database name]"`
+
+<br>
+
+#### <i>Report output in db-facts config format</i>
+<b>Run command:</b> `db-facts config "[database name]"`
