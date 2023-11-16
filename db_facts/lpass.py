@@ -19,20 +19,12 @@ def pull_lastpass_aws_iam(lastpass_entry_name: str) -> LastPassAWSIAM:
 
 
 def lpass_field(name: str, field: str) -> str:
-    if field == 'notes':
-        field_arg = '--notes'
-    elif field == 'username':
-        field_arg = '--username'
-    elif field == 'password':
-        field_arg = '--password'
-    elif field == 'url':
-        field_arg = '--url'
-    else:
-        field_arg = '--field=' + field
-    raw_output = check_output(['lpass',
-                               'show',
-                               field_arg,
-                               name])
+    # This used to use the lastpass-cli to pull credentials. But we've moved
+    # from lastpass to 1password. This command retrieves the fields in the
+    # same format from 1password instead.
+    raw_output = check_output(
+        ['op', 'item', 'get', name, '--field', f'label={field}'])
+
     return raw_output.decode('utf-8').rstrip('\n')
 
 
