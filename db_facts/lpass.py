@@ -22,6 +22,10 @@ def lpass_field(name: str, field: str) -> str:
     # This used to use the lastpass-cli to pull credentials. But we've moved
     # from lastpass to 1password. This command retrieves the fields in the
     # same format from 1password instead.
+
+    # Note this won't work for the way 1password stores notes and URLs, which
+    # is different from lpass. But as of now db-facts doesn't ever rely on
+    # these fields.
     raw_output = check_output(
         ['op', 'item', 'get', name, '--field', f'label={field}'])
 
