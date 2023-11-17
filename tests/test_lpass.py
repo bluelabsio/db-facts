@@ -13,11 +13,11 @@ from db_facts import lpass
 class TestLPass(unittest.TestCase):
     def test_lpass_field_url_raises(self):
         with self.assertRaises(NotImplementedError):
-            out = lpass.lpass_field('my_name', 'url')
+            lpass.lpass_field('my_name', 'url')
 
     def test_lpass_field_notes_raises(self):
         with self.assertRaises(NotImplementedError):
-            out = lpass.lpass_field('my_name', 'notes')
+            lpass.lpass_field('my_name', 'notes')
 
     @patch('db_facts.lpass.check_output')
     def test_lpass_field_username(self, mock_check_output):
