@@ -1,9 +1,24 @@
+# ************************************************
+# *** ATTENTION *** THIS DOES NOT USE LASTPASS ***
+# ************************************************
+# BlueLabs is currently transitioning off lastpass and onto 1password.
+# Even though this file says "lpass", all underlying calls to the
+# lpass CLI have been replaced with calls to the 1password CLI.
+
 import unittest
 from unittest.mock import patch
 from db_facts import lpass
 
 
 class TestLPass(unittest.TestCase):
+    def test_lpass_field_url_raises(self):
+        with self.assertRaises(NotImplementedError):
+            out = lpass.lpass_field('my_name', 'url')
+
+    def test_lpass_field_notes_raises(self):
+        with self.assertRaises(NotImplementedError):
+            out = lpass.lpass_field('my_name', 'notes')
+
     @patch('db_facts.lpass.check_output')
     def test_lpass_field_username(self, mock_check_output):
         mock_check_output.return_value = "fakeuser\n".encode("utf-8")
