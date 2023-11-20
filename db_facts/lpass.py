@@ -1,3 +1,10 @@
+# ************************************************
+# *** ATTENTION *** THIS DOES NOT USE LASTPASS ***
+# ************************************************
+# BlueLabs is currently transitioning off lastpass and onto 1password.
+# Even though this file says "lpass", all underlying calls to the
+# lpass CLI have been replaced with calls to the 1password CLI.
+
 from subprocess import check_output
 from .db_facts_types import LastPassUsernamePassword, LastPassAWSIAM
 from .db_type import canonicalize_db_type, db_protocol
@@ -19,20 +26,22 @@ def pull_lastpass_aws_iam(lastpass_entry_name: str) -> LastPassAWSIAM:
 
 
 def lpass_field(name: str, field: str) -> str:
-    if field == 'notes':
-        field_arg = '--notes'
-    elif field == 'username':
-        field_arg = '--username'
-    elif field == 'password':
-        field_arg = '--password'
-    elif field == 'url':
-        field_arg = '--url'
-    else:
-        field_arg = '--field=' + field
-    raw_output = check_output(['lpass',
-                               'show',
-                               field_arg,
-                               name])
+    # *** ATTENTION *** THIS DOES NOT USE LASTPASS ***
+
+    # This used to use the lastpass-cli to pull credentials. But we've moved
+    # from lastpass to 1password. This command retrieves the fields in the
+    # same format from 1password instead.
+
+    # Note this won't work for the way 1password stores notes and URLs, which
+    # is different from lpass. But as of now db-facts doesn't ever rely on
+    # these fields.
+    if field == 'notes' or field == 'url':
+        raise NotImplementedError(
+            'Cannot retrieve notes or URL fields from 1password')
+
+    raw_output = check_output(
+        ['op', 'item', 'get', name, '--field', f'label={field}'])
+
     return raw_output.decode('utf-8').rstrip('\n')
 
 
