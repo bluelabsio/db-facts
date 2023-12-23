@@ -1,7 +1,7 @@
 # Run ./deps.sh after changing this file.
 
 # The following are dev-time dependencies
-nose>=0.0
+nose
 coverage>=0.0
 flake8
 mypy
@@ -15,3 +15,8 @@ sphinx>=3 # used to generate and upload docs - sphinx-autodoc-typehints requires
 sphinx-autodoc-typehints # used to handle type hints
 sphinx-rtd-theme # used to style docs for readthedocs.io
 recommonmark # used to be able to use sphinx with markdown
+
+boto3
+Jinja2
+setuptools
+pyyaml

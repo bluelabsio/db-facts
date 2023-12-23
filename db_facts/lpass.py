@@ -5,9 +5,11 @@
 # Even though this file says "lpass", all underlying calls to the
 # lpass CLI have been replaced with calls to the 1password CLI.
 
-from subprocess import check_output
+import json
+from subprocess import check_output, CalledProcessError
 from .db_facts_types import LastPassUsernamePassword, LastPassAWSIAM
 from .db_type import canonicalize_db_type, db_protocol
+import logging
 
 
 def pull_lastpass_username_password(lastpass_entry_name: str) -> LastPassUsernamePassword:
@@ -32,17 +34,27 @@ def lpass_field(name: str, field: str) -> str:
     # from lastpass to 1password. This command retrieves the fields in the
     # same format from 1password instead.
 
-    # Note this won't work for the way 1password stores notes and URLs, which
-    # is different from lpass. But as of now db-facts doesn't ever rely on
-    # these fields.
-    if field == 'notes' or field == 'url':
+    # Note this won't work for URLs, which 1password stores
+    # different from lpass. But as of now db-facts doesn't ever rely on
+    # this field.
+    if field == 'url':
         raise NotImplementedError(
             'Cannot retrieve notes or URL fields from 1password')
 
-    raw_output = check_output(
-        ['op', 'item', 'get', name, '--field', f'label={field}'])
+    # The field lastpass stored notes in was called "notes", but the field
+    # 1password stores notes in is called "notesPlain".
+    if field == 'notes':
+        field = 'notesPlain'
 
-    return raw_output.decode('utf-8').rstrip('\n')
+    try:
+        raw_output = check_output(
+            ['op', 'item', 'get', name, '--field', f'label={field}', '--format=json'])
+        parsed_output = json.loads(raw_output)
+        return parsed_output['value']
+    except (json.JSONDecodeError, TypeError, CalledProcessError) as e:
+        log = logging.getLogger(__name__)
+        log.error(f"Error retrieving entry from 1password cli: {e}")
+        raise
 
 
 def db_info_from_lpass(lpass_entry_name: str):
