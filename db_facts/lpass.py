@@ -52,7 +52,7 @@ def lpass_field(name: str, field: str) -> str:
             ['op', 'item', 'get', name, '--field', f'label={field}', '--format=json'])
         parsed_output = json.loads(raw_output)
         return parsed_output['value']
-    except (CalledProcessError, KeyError) as e:
+    except (CalledProcessError, KeyError):
         log.error(
             f'Error from 1password CLI retrieving {field} from "{name}".\n' +
             'Do you have the 1password CLI installed?\n' +
