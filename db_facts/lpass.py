@@ -39,21 +39,25 @@ def lpass_field(name: str, field: str) -> str:
     # this field.
     if field == 'url':
         raise NotImplementedError(
-            'Cannot retrieve notes or URL fields from 1password')
+            'Cannot retrieve URL field from 1password')
 
     # The field lastpass stored notes in was called "notes", but the field
     # 1password stores notes in is called "notesPlain".
     if field == 'notes':
         field = 'notesPlain'
 
+    log = logging.getLogger(__name__)
     try:
         raw_output = check_output(
             ['op', 'item', 'get', name, '--field', f'label={field}', '--format=json'])
         parsed_output = json.loads(raw_output)
         return parsed_output['value']
-    except (json.JSONDecodeError, TypeError, CalledProcessError) as e:
-        log = logging.getLogger(__name__)
-        log.error(f"Error retrieving entry from 1password cli: {e}")
+    except (CalledProcessError, KeyError):
+        log.error(
+            f'Error from 1password CLI retrieving {field} from "{name}".\n' +
+            'Do you have the 1password CLI installed?\n' +
+            f'Does the entry {name} exist in your 1password account?\n' +
+            f'Does this entry have the field: {field}?')
         raise
 
 
